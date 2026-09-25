@@ -1,0 +1,174 @@
+﻿@model List<OrduNet.Web.Models.Entities.CafeteriaMenu>
+@{
+    ViewData["Title"] = "Yemek Listesi & Excel Yönetimi";
+    Layout = "_Layout";
+    int currentYear = ViewBag.SelectedYear ?? DateTime.Today.Year;
+    int currentMonth = ViewBag.SelectedMonth ?? DateTime.Today.Month;
+    string monthName = ViewBag.MonthName as string ?? DateTime.Today.ToString("MMMM yyyy");
+
+    var prevMonthDate = new DateTime(currentYear, currentMonth, 1).AddMonths(-1);
+    var nextMonthDate = new DateTime(currentYear, currentMonth, 1).AddMonths(1);
+}
+
+<div class="container py-4">
+    <!-- Breadcrumb ve Başlık -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Yemek Listesi Yönetimi</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark">
+                <i class="bi bi-cup-hot-fill text-warning me-2"></i> Yemek Listesi & Aylık Excel Yönetimi
+            </h3>
+            <small class="text-muted">Aylık yemek listelerini Excel olarak yükleyin, düzenleyin veya şablon indirip doldurun.</small>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="DownloadCafeteriaTemplate" asp-route-year="@currentYear" asp-route-month="@currentMonth" class="btn btn-outline-success btn-sm fw-semibold shadow-sm">
+                <i class="bi bi-download me-1"></i> @monthName İçin Excel Şablonu İndir
+            </a>
+            <a asp-controller="Duty" asp-action="Menu" target="_blank" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-eye me-1"></i> Personel Sayfasını Gör
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panele Dön
+            </a>
+        </div>
+    </div>
+
+
+
+    <!-- Excel Yükleme Kartı -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h6 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+                <i class="bi bi-file-earmark-excel-fill text-success fs-5"></i> 1 Aylık Yemek Listesi Yükle
+            </h6>
+            <span class="badge bg-light text-muted border">Desteklenen Format: .xlsx, .xls</span>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="UploadCafeteriaExcel" method="post" enctype="multipart/form-data" class="row g-3 align-items-end">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="redirectYear" value="@currentYear" />
+                <input type="hidden" name="redirectMonth" value="@currentMonth" />
+
+                <div class="col-lg-8">
+                    <label class="form-label small fw-semibold text-dark">Aylık Excel Dosyası Seçiniz</label>
+                    <input type="file" name="file" class="form-control" accept=".xlsx, .xls" required />
+                    <div class="form-text small text-muted mt-1">
+                        <i class="bi bi-stars text-warning me-1"></i> <strong>Akıllı Format Desteği:</strong> Antep Restaurant & Catering firmasının gönderdiği 7 sütunlu aylık takvim formatındaki Excel dosyasını veya standart tablo şablonunu doğrudan yükleyebilirsiniz. Sistem tarihleri, ana yemekleri, çorbaları, pilavları, tatlı/salatbar ve içecekleri otomatik olarak ayrıştırıp takvime işler.
+                    </div>
+                </div>
+
+                <div class="col-lg-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-warning text-dark fw-bold w-100 shadow-sm">
+                        <i class="bi bi-cloud-arrow-up-fill me-1"></i> Excel'i Yükle & Sisteme Aktar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Menü Takvimi / Tablosu -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-3">
+                <span class="fw-bold text-dark"><i class="bi bi-calendar3 me-1 text-primary"></i> @monthName Yemek Listesi (@Model.Count Gün)</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <!-- Ay Değiştirici -->
+                <div class="btn-group btn-group-sm" role="group">
+                    <a asp-action="Index" asp-route-year="@prevMonthDate.Year" asp-route-month="@prevMonthDate.Month" class="btn btn-outline-secondary" title="Önceki Ay">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                    <button type="button" class="btn btn-outline-secondary fw-semibold text-dark" disabled style="background-color: #f8fafb; opacity: 1;">
+                        @monthName
+                    </button>
+                    <a asp-action="Index" asp-route-year="@nextMonthDate.Year" asp-route-month="@nextMonthDate.Month" class="btn btn-outline-secondary" title="Sonraki Ay">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+
+                @if (Model.Any())
+                {
+                    <form asp-action="ClearMonthMenu" method="post" class="d-inline" onsubmit="return confirm('@monthName dönemine ait tüm menü kayıtlarını silmek istediğinize emin misiniz?');">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="year" value="@currentYear" />
+                        <input type="hidden" name="month" value="@currentMonth" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Bu Ayın Menüsünü Temizle">
+                            <i class="bi bi-trash me-1"></i> Bu Ayı Temizle
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th style="width: 120px;">Tarih</th>
+                        <th style="width: 110px;">Gün</th>
+                        <th>Çorba</th>
+                        <th>Ana Yemek</th>
+                        <th>Yardımcı Yemek</th>
+                        <th>Tatlı / Salata / Meyve</th>
+                        <th class="text-center" style="width: 100px;">Kalori</th>
+                        <th class="text-end" style="width: 80px;">Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                <i class="bi bi-calendar-x fs-1 d-block mb-2 text-secondary"></i>
+                                @monthName dönemine ait kayıtlı yemek menüsü bulunmuyor.<br />
+                                Yukarıdaki alandan Excel dosyanızı yükleyebilir veya örnek şablonu indirebilirsiniz.
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        var isToday = item.Date.Date == DateTime.Today;
+                        <tr class="@(isToday ? "table-warning bg-opacity-25" : "")">
+                            <td>
+                                <div class="fw-bold @(isToday ? "text-primary" : "text-dark")">
+                                    @item.Date.ToString("dd.MM.yyyy")
+                                </div>
+                                @if (isToday)
+                                {
+                                    <span class="badge bg-warning text-dark font-monospace" style="font-size: 0.65rem;">BUGÜN</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">@item.DayName</span>
+                            </td>
+                            <td class="text-dark small">@item.Soup</td>
+                            <td class="fw-bold text-primary small">@item.MainDish</td>
+                            <td class="text-dark small">@item.SideDish</td>
+                            <td class="text-dark small">@item.DessertOrSalad</td>
+                            <td class="text-center small text-muted">
+                                @(item.Calories.HasValue ? $"{item.Calories} kcal" : "-")
+                            </td>
+                            <td class="text-end">
+                                <form asp-action="DeleteCafeteriaDay" method="post" class="d-inline" onsubmit="return confirm('@item.Date.ToString("dd.MM.yyyy") gününün menüsünü silmek istediğinize emin misiniz?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="hidden" name="redirectYear" value="@currentYear" />
+                                    <input type="hidden" name="redirectMonth" value="@currentMonth" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm py-0 px-2" title="Günü Sil">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

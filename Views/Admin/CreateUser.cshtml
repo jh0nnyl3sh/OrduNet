@@ -1,0 +1,202 @@
+﻿@model OrduNet.Web.Models.ViewModels.CreateUserViewModel
+@using OrduNet.Web.Models.Entities
+@{
+    ViewData["Title"] = "Yeni Kullanıcı Tanımla";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2 small">
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Users" class="text-decoration-none text-muted">Kullanıcı Yönetimi</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Yeni Kullanıcı</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-person-plus-fill text-primary me-2"></i> Yeni Kullanıcı Tanımla</h4>
+                        <small class="text-muted">Kullanıcı bilgilerini ve erişebileceği modül yetkilerini belirleyin.</small>
+                    </div>
+                    <a asp-action="Users" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Listeye Dün
+                    </a>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="CreateUser" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-3" role="alert"></div>
+
+                        <!-- Temel Bilgiler -->
+                        <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+                            <i class="bi bi-person-badge me-1 text-primary"></i> Temel Hesap Bilgileri
+                        </h6>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Username" class="form-label small fw-semibold text-dark">Kullanıcı Adı <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                    <input asp-for="Username" class="form-control" placeholder="örnek: ahmet.yilmaz" autocomplete="off" />
+                                </div>
+                                <span asp-validation-for="Username" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="FullName" class="form-label small fw-semibold text-dark">Ad Soyad <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-text"></i></span>
+                                    <input asp-for="FullName" class="form-control" placeholder="Ad Soyad" />
+                                </div>
+                                <span asp-validation-for="FullName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Title" class="form-label small fw-semibold text-dark">Unvan / Görev</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light"><i class="bi bi-briefcase"></i></span>
+                                    <input asp-for="Title" class="form-control" placeholder="örnek: Yazı İşleri Müdür�, Zabıt Kâtibi" />
+                                </div>
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label small fw-semibold text-dark">E-Posta Adresi</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                    <input asp-for="Email" type="email" class="form-control" placeholder="örnek@adalet.gov.tr" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label small fw-semibold text-dark">Giriş Şifresi <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light"><i class="bi bi-key"></i></span>
+                                    <input asp-for="Password" type="password" class="form-control" placeholder="En az 6 karakter" autocomplete="new-password" />
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label small fw-semibold text-dark">Şifre Tekrar <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifreyi tekrar giriniz" />
+                                </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Rol ve Durum -->
+                        <h6 class="fw-bold text-dark border-bottom pb-2 mt-4 mb-3">
+                            <i class="bi bi-shield-check me-1 text-primary"></i> Rol ve Hesap Durumu
+                        </h6>
+
+                        <div class="card bg-light border-0 p-3 mb-3">
+                            <div class="d-flex flex-column gap-2">
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsActive" class="form-check-input" type="checkbox" id="userIsActive" checked>
+                                    <label class="form-check-label fw-semibold small text-dark" for="userIsActive">
+                                        Kullanıcı Hesabı Aktif
+                                    </label>
+                                    <div class="form-text small">Pasif durumdaki kullanıcılar sisteme giriş yapamazlar.</div>
+                                </div>
+
+                                <hr class="my-2 border-secondary-subtle">
+
+                                <div class="form-check form-switch">
+                                    <input asp-for="IsSuperAdmin" class="form-check-input" type="checkbox" id="userIsSuperAdmin">
+                                    <label class="form-check-label fw-semibold small text-dark" for="userIsSuperAdmin">
+                                        <span class="badge bg-warning text-dark me-1"><i class="bi bi-star-fill"></i> Super Yönetici</span> (Tüm modüllere ve kullanıcı yönetimine tam yetki)
+                                    </label>
+                                    <div class="form-text small">Super yöneticiler ağağ�daki bireysel modül kişitlamalarindan bağ�msöz tüm sistemi yönetebilir.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modül izinleri -->
+                        <div id="modulePermissionsBlock">
+                            <h6 class="fw-bold text-dark border-bottom pb-2 mt-4 mb-3">
+                                <i class="bi bi-grid-3x3-gap me-1 text-primary"></i> Modiler Yetkilendirme
+                            </h6>
+                            <p class="small text-muted mb-3">
+                                Bu kullanıcın�n yönetim panelinde hangi modülleri göruntüleyip düzenleyebilece�ini seçin:
+                            </p>
+
+                            <div class="row g-2">
+                                @foreach (var module in SystemModules.ModuleNames)
+                                {
+                                    var iconClass = module.Key switch
+                                    {
+                                        SystemModules.Directory => "bi-telephone-fill text-primary",
+                                        SystemModules.Announcements => "bi-megaphone-fill text-warning",
+                                        SystemModules.Cafeteria => "bi-cup-hot-fill text-success",
+                                        SystemModules.Duties => "bi-calendar-check-fill text-info",
+                                        SystemModules.IssueTracker => "bi-tools text-danger",
+                                        _ => "bi-app-indicator text-secondary"
+                                    };
+
+                                    <div class="col-md-6">
+                                        <div class="card border p-2 h-100 shadow-none hover-shadow-sm module-card">
+                                            <div class="form-check d-flex align-items-center gap-2">
+                                                <input type="checkbox" 
+                                                       name="SelectedModules" 
+                                                       value="@module.Key" 
+                                                       id="mod_@module.Key" 
+                                                       class="form-check-input module-checkbox"
+                                                       @(Model.SelectedModules.Contains(module.Key) ? "checked" : "") />
+                                                <label class="form-check-label w-100 small fw-semibold text-dark cursor-pointer" for="mod_@module.Key">
+                                                    <i class="bi @iconClass me-1"></i> @module.Value
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a asp-action="Users" class="btn btn-outline-secondary btn-sm px-3">İptal</a>
+                            <button type="submit" class="btn btn-primary btn-sm px-4 shadow-sm" style="background-color: var(--primary-color);">
+                                <i class="bi bi-check-lg me-1"></i> Kullanıcıy� Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const superAdminCheck = document.getElementById("userIsSuperAdmin");
+        const moduleBlock = document.getElementById("modulePermissionsBlock");
+        const moduleCheckboxes = document.querySelectorAll(".module-checkbox");
+
+        function updateModulesState() {
+            if (superAdminCheck.checked) {
+                moduleCheckboxes.forEach(cb => {
+                    cb.checked = true;
+                    cb.disabled = true;
+                });
+                moduleBlock.style.opacity = "0.6";
+            } else {
+                moduleCheckboxes.forEach(cb => {
+                    cb.disabled = false;
+                });
+                moduleBlock.style.opacity = "1";
+            }
+        }
+
+        superAdminCheck.addEventListener("change", updateModulesState);
+        updateModulesState();
+    });
+</script>

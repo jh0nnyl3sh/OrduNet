@@ -1,0 +1,76 @@
+﻿@model List<OrduNet.Web.Models.Entities.HelpdeskFaq>
+@{
+    ViewData["Title"] = "SSS & Hızlı Yardım Yönetimi";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
+                <i class="bi bi-patch-question-fill text-warning me-2"></i> Hızlı Yardım (SSS)
+            </h2>
+            <div class="text-muted small">Bilgi İşlem Destek sayfasında listelenecek sorun ve çözümleri düzenleyin</div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panoya Dün
+            </a>
+            <a asp-action="CreateFaq" class="btn btn-warning btn-sm fw-bold text-dark">
+                <i class="bi bi-plus-circle me-1"></i> Yeni Soru Ekle
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Sıra</th>
+                            <th>ikon</th>
+                            <th>Soru / Konu</th>
+                            <th>çözüm / Cevap</th>
+                            <th>Durum</th>
+                            <th class="text-end pe-4">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var faq in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold text-muted">@faq.DisplayOrder</td>
+                                <td><i class="bi @faq.IconClass fs-4 text-secondary"></i></td>
+                                <td class="fw-bold text-dark">@faq.Question</td>
+                                <td class="text-muted small text-wrap" style="max-width: 300px;">@faq.Answer</td>
+                                <td>
+                                    @if (faq.IsActive)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Pasif</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group btn-group-sm">
+                                        <a asp-action="EditFaq" asp-route-id="@faq.Id" class="btn btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-action="DeleteFaq" asp-route-id="@faq.Id" method="post" style="display:inline;" onsubmit="return confirm('Bu kaydı silmek istediğinize emin mişiniz?');">
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

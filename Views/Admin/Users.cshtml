@@ -1,0 +1,131 @@
+﻿@model List<OrduNet.Web.Models.Entities.AppUser>
+@{
+    ViewData["Title"] = "Kullanıcı & Yetki Yönetimi";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Kullanıcı Yönetimi</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-people-fill text-primary me-2"></i> Kullanıcılar & Modiler Yetkiler</h3>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="CreateUser" class="btn btn-primary btn-sm shadow-sm" style="background-color: var(--primary-color);">
+                <i class="bi bi-person-plus-fill me-1"></i> Yeni Kullanıcı Tanımla
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panele Dün
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-dark"><i class="bi bi-shield-lock me-1"></i> Sistem Kullanıcılar� (@Model.Count)</span>
+            <small class="text-muted">Her kullanıcın�n erişebildiği modüller yetki kutucuklarıyla belirlenir.</small>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th style="width: 50px;" class="text-center">#</th>
+                        <th>Kullanıcı Adı / Ad Soyad</th>
+                        <th>Unvan & E-Posta</th>
+                        <th>Rol & Yetkiler</th>
+                        <th class="text-center">Durum</th>
+                        <th class="text-center">Son Giriş</th>
+                        <th class="text-end" style="width: 140px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int idx = 1; }
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="text-center text-muted">@(idx++)</td>
+                            <td>
+                                <div class="fw-bold text-dark">
+                                    @user.FullName
+                                    @if (user.IsSuperAdmin)
+                                    {
+                                        <span class="badge bg-danger ms-1 font-monospace" style="font-size: 0.65rem;">SÜPER ADM�N</span>
+                                    }
+                                </div>
+                                <small class="text-muted font-monospace">@@@user.Username</small>
+                            </td>
+                            <td>
+                                <div class="small">@(user.Title ?? "-")</div>
+                                <small class="text-muted">@(user.Email ?? "-")</small>
+                            </td>
+                            <td>
+                                @if (user.IsSuperAdmin)
+                                {
+                                    <span class="badge bg-dark">Tüm Modüllere Tam Yetkili</span>
+                                }
+                                else if (user.Permissions.Any(p => p.CanManage))
+                                {
+                                    <div class="d-flex flex-wrap gap-1">
+                                        @foreach (var p in user.Permissions.Where(x => x.CanManage))
+                                        {
+                                            var modName = OrduNet.Web.Models.Entities.SystemModules.ModuleNames.GetValueOrDefault(p.ModuleKey, p.ModuleKey);
+                                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25" style="font-size: 0.72rem;">
+                                                @modName
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Yetki Tanımlanmamış</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (user.IsActive)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success border-opacity-25">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-25">Pasif</span>
+                                }
+                            </td>
+                            <td class="text-center small text-muted">
+                                @(user.LastLoginAt.HasValue ? user.LastLoginAt.Value.ToString("dd.MM.yyyy HH:mm") : "Hiç girmedi")
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-outline-primary" title="Düzenle">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    @if (user.Username.ToLower() != "admin")
+                                    {
+                                        <form asp-action="ToggleUserStatus" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Kullanıcı durumunu deği�tirmek istediğinize emin mişiniz?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn @(user.IsActive ? "btn-outline-warning" : "btn-outline-success")" title="@(user.IsActive ? "Pasife Al" : "Aktif Et")">
+                                                <i class="bi @(user.IsActive ? "bi-person-slash" : "bi-person-check")"></i>
+                                            </button>
+                                        </form>
+                                        <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post" class="d-inline ms-1" onsubmit="return confirm('@user.Username kullanıcıs� tamamen silinecek. Onaylıyor musunuz?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger" title="Sil">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

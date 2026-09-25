@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Excel'den Toplu Personel Yükleme";
+    var errors = ViewBag.Errors as List<string>;
+    var successCount = ViewBag.SuccessCount as int? ?? 0;
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-3 mb-4">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-primary" style="color: var(--primary-color) !important;">
+                        <i class="bi bi-file-earmark-excel-fill text-success me-2"></i> Excel'den Toplu Personel Yükleme
+                    </h5>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Panoya Dün</a>
+                </div>
+                <div class="card-body p-4">
+                    <!-- ADIM 1: �ABLON İNDİRME -->
+                    <div class="p-3 bg-light rounded-3 border mb-4">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div>
+                                <h6 class="fw-bold mb-1"><i class="bi bi-1-circle-fill text-primary me-1"></i> Adım 1: Excel �ablonunu indirin</h6>
+                                <p class="text-muted small mb-0">Sütun bağl�klar�n�n ve veri formatın�n hazır olduğu Örnek Excel dosyasını bilgisayarın�za indirin.</p>
+                            </div>
+                            <a asp-action="DownloadTemplate" class="btn btn-success btn-sm fw-bold">
+                                <i class="bi bi-download me-1"></i> �ablonu indir (.xlsx)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ADIM 2: EXCEL YÜKLEME FORMU -->
+                    <h6 class="fw-bold mb-2"><i class="bi bi-2-circle-fill text-primary me-1"></i> Adım 2: Doldurduğunuz Dosyayı Yükleyin</h6>
+                    <form asp-action="ExcelImport" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted small">Hazırladı��n�z Excel (.xlsx) dosyasını seçiniz:</label>
+                            <input type="file" name="excelFile" class="form-control form-control-lg" accept=".xlsx" required />
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i> Sistem dosyadaki <code>Ad</code>, <code>Soyad</code>, <code>Unvan</code>, <code>Birim</code> ve <code>Dahili No</code> alanların� otomatik okuyup kaydedecektir.
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Index" class="btn btn-secondary">Personel Listesine Git</a>
+                            <button type="submit" class="btn btn-primary fw-bold" style="background-color: var(--primary-color); border-color: var(--primary-color);">
+                                <i class="bi bi-upload me-1"></i> Dosyayı Yükle ve Aktar
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- GERİ BİLDİRİM / SONUÇLAR -->
+                    @if (successCount > 0)
+                    {
+                        <div class="alert alert-success mt-4 d-flex align-items-center" role="alert">
+                            <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                            <div>
+                                <strong>İşlem Başarıl�!</strong> Toplam <strong>@successCount</strong> personel kaydı sisteme başarıyla aktarıldı.
+                            </div>
+                        </div>
+                    }
+
+                    @if (errors != null && errors.Any())
+                    {
+                        <div class="alert alert-warning mt-4" role="alert">
+                            <h6 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Baz� Satırlarda Uyarı/Hatalar Oluştu:</h6>
+                            <ul class="mb-0 small ps-3">
+                                @foreach (var err in errors)
+                                {
+                                    <li>@err</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

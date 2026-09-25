@@ -1,0 +1,92 @@
+﻿@model List<OrduNet.Web.Models.Entities.AuditLog>
+@{
+    ViewData["Title"] = "Sistem İşlem Günlükleri (Audit Log)";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">İşlem Günlükleri</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history text-primary me-2"></i> Sistem Güvenlik & Denetim Günlü��</h3>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="BackupDatabase" class="btn btn-outline-success btn-sm">
+                <i class="bi bi-download me-1"></i> Veritabanı Yedeği indir
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panele Dün
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-dark"><i class="bi bi-shield-check me-1"></i> Son Sistem Hareketleri (Son @Model.Count Kayıt)</span>
+            <small class="text-muted">Kullanıcılar�n gerçekle�tirdişi ekleme, silme, güncelleme ve giriş işlemleri kayıt alt�ndadır.</small>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 140px;">Tarih / Saat</th>
+                        <th style="width: 130px;">Kullanıcı</th>
+                        <th style="width: 140px;">İşlem Türü</th>
+                        <th style="width: 130px;">Modül / Tablo</th>
+                        <th>İşlem Detayları</th>
+                        <th style="width: 110px;" class="text-muted text-end">IP Adresi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">Henüz kaydedilmiş işlem günlü�� bulunmuyor.</td>
+                        </tr>
+                    }
+                    @foreach (var log in Model)
+                    {
+                        var badgeClass = log.Action switch
+                        {
+                            "Giriş Başarıl�" => "bg-success text-white",
+                            "Çıkış" => "bg-secondary text-white",
+                            "Kullanıcı Oluşturma" or "Personel Ekleme" => "bg-primary text-white",
+                            "Personel Silme" => "bg-danger text-white",
+                            "Yedekleme" => "bg-info text-dark",
+                            "Excel Aktarımı" => "bg-success-subtle text-success-emphasis",
+                            _ => "bg-light text-dark border"
+                        };
+
+                        <tr>
+                            <td class="text-nowrap text-muted font-monospace">
+                                <i class="bi bi-clock me-1"></i>@log.Timestamp.ToString("dd.MM.yyyy HH:mm:ss")
+                            </td>
+                            <td>
+                                <span class="fw-bold text-dark">
+                                    <i class="bi bi-person-badge me-1 text-secondary"></i>@log.UserName
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge @badgeClass px-2 py-1">@log.Action</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">@log.EntityName @(log.EntityId != null ? $"#{log.EntityId}" : "")</span>
+                            </td>
+                            <td class="text-dark">
+                                @log.Details
+                            </td>
+                            <td class="text-end text-muted font-monospace">
+                                @(string.IsNullOrEmpty(log.IpAddress) ? "-" : log.IpAddress)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

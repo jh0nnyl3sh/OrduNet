@@ -1,0 +1,152 @@
+﻿@model OrduNet.Web.Models.Entities.EmergencyAlert
+@{
+    ViewData["Title"] = "Acil Durum & Duyuru şeridi";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2 small">
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Acil Durum Band�</li>
+                </ol>
+            </nav>
+
+
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0 text-dark">
+                            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i> Acil Durum / Kırmızı Bant Yönetimi
+                        </h4>
+                        <small class="text-muted">Portalın en üst�nde personele yönelik acil anons veya kritik uyarı bandün� yönetin.</small>
+                    </div>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Panele Dün
+                    </a>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Canl� önizleme Kutusu -->
+                    <div class="mb-4">
+                        <label class="form-label small fw-semibold text-dark mb-1">
+                            <i class="bi bi-eye me-1"></i> Canl� önizleme (Portal üst şeridi)
+                        </label>
+                        <div id="previewAlert" class="alert @(Model.AlertLevel == "warning" ? "alert-warning" : Model.AlertLevel == "info" ? "alert-info" : "alert-danger") border-0 shadow-sm d-flex align-items-center gap-2 mb-0 py-2 px-3 rounded-2">
+                            <i id="previewIcon" class="bi @(Model.AlertLevel == "warning" ? "bi-exclamation-circle-fill" : Model.AlertLevel == "info" ? "bi-info-circle-fill" : "bi-exclamation-triangle-fill") fs-5"></i>
+                            <div class="flex-grow-1">
+                                <strong id="previewTitle">@(string.IsNullOrEmpty(Model.Title) ? "AC�L DUYURU BAŞLIĞI" : Model.Title):</strong>
+                                <span id="previewMessage">@(string.IsNullOrEmpty(Model.Message) ? "Buraya acil durum mesajı gelecektir." : Model.Message)</span>
+                            </div>
+                            <span id="previewStatusBadge" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                @(Model.IsActive ? "YAYINDA" : "GÖZLÜ / KAPALI")
+                            </span>
+                        </div>
+                    </div>
+
+                    <form asp-action="EmergencyAlert" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Aktif / Pasif şalteri -->
+                        <div class="card bg-light border-0 p-3 mb-4">
+                            <div class="form-check form-switch d-flex align-items-center gap-3">
+                                <input asp-for="IsActive" class="form-check-input fs-4 m-0" type="checkbox" id="alertIsActive">
+                                <div>
+                                    <label class="form-check-label fw-bold text-dark fs-6 cursor-pointer" for="alertIsActive">
+                                        Acil Durum Bandün� Sitede Göster (Aktif Et)
+                                    </label>
+                                    <div class="small text-muted">
+                                        işaretli olduğunda portalın tüm sayfalarının en tepesinde göze carpan kırmızı / renkli şerit yayınlanır.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label asp-for="Title" class="form-label small fw-semibold text-dark">Duyuru / Alarm Bağlı�� <span class="text-danger">*</span></label>
+                                <input asp-for="Title" id="inputTitle" class="form-control" placeholder="Örnek: KRİTİK SİSTEM BAKIMI veya HAVA MUHALEFETİ" required />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="AlertLevel" class="form-label small fw-semibold text-dark">Uyarı Seviyesi & Renk</label>
+                                <select asp-for="AlertLevel" id="selectLevel" class="form-select">
+                                    <option value="danger">Kırmızı (Kritik / Acil Durum)</option>
+                                    <option value="warning">Sarı / Türuncu (Önemli Uyarı)</option>
+                                    <option value="info">Mavi (Bilgilendirme)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Message" class="form-label small fw-semibold text-dark">Duyuru Açıklamas� / Detay Metni <span class="text-danger">*</span></label>
+                                <textarea asp-for="Message" id="inputMessage" class="form-control" rows="3" placeholder="Personele duyurulacak acil durum veya kesinti ağ�klamas�n� yazın�z..." required></textarea>
+                                <span asp-validation-for="Message" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                            <div class="small text-muted">
+                                @if (Model.UpdatedAt != DateTime.MinValue)
+                                {
+                                    <span><i class="bi bi-clock-history me-1"></i> Son Güncelleme: @Model.UpdatedAt.ToString("dd.MM.yyyy HH:mm") (@Model.UpdatedBy)</span>
+                                }
+                            </div>
+                            <button type="submit" class="btn btn-danger btn-sm px-4 shadow-sm">
+                                <i class="bi bi-check-lg me-1"></i> Ayarları Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const titleInput = document.getElementById("inputTitle");
+        const msgInput = document.getElementById("inputMessage");
+        const levelSelect = document.getElementById("selectLevel");
+        const activeCheck = document.getElementById("alertIsActive");
+
+        const previewAlert = document.getElementById("previewAlert");
+        const previewIcon = document.getElementById("previewIcon");
+        const previewTitle = document.getElementById("previewTitle");
+        const previewMsg = document.getElementById("previewMessage");
+        const previewBadge = document.getElementById("previewStatusBadge");
+
+        function updatePreview() {
+            previewTitle.textContent = (titleInput.value.trim() || "AC�L DUYURU BAŞLIĞI") + ":";
+            previewMsg.textContent = (msgInput.value.trim() || "Buraya acil durum mesajı gelecektir.");
+
+            previewAlert.className = "alert border-0 shadow-sm d-flex align-items-center gap-2 mb-0 py-2 px-3 rounded-2 ";
+            if (levelSelect.value === "warning") {
+                previewAlert.classList.add("alert-warning");
+                previewIcon.className = "bi bi-exclamation-circle-fill fs-5";
+            } else if (levelSelect.value === "info") {
+                previewAlert.classList.add("alert-info");
+                previewIcon.className = "bi bi-info-circle-fill fs-5";
+            } else {
+                previewAlert.classList.add("alert-danger");
+                previewIcon.className = "bi bi-exclamation-triangle-fill fs-5";
+            }
+
+            if (activeCheck.checked) {
+                previewBadge.className = "badge bg-success";
+                previewBadge.textContent = "YAYINDA";
+            } else {
+                previewBadge.className = "badge bg-secondary";
+                previewBadge.textContent = "GÖZLÜ / KAPALI";
+            }
+        }
+
+        titleInput.addEventListener("input", updatePreview);
+        msgInput.addEventListener("input", updatePreview);
+        levelSelect.addEventListener("change", updatePreview);
+        activeCheck.addEventListener("change", updatePreview);
+    });
+</script>

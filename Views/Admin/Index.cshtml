@@ -1,0 +1,429 @@
+﻿@model List<OrduNet.Web.Models.Entities.Personnel>
+@using OrduNet.Web.Models.Entities
+@using OrduNet.Web.Services
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+    var alert = ViewBag.EmergencyAlert as EmergencyAlert;
+    var recentTickets = ViewBag.RecentTickets as List<IssueTicket> ?? new List<IssueTicket>();
+}
+
+<div class="container py-4">
+    <!-- ÜST BAŞLIK VE HIZLI EYLEMLER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
+                <i class="bi bi-speedometer2 text-warning me-2"></i> OrduNet Yönetim Paneli
+            </h2>
+            <div class="text-muted small">Adliye intranet portalı, telefon rehberi ve teknik destek yönetim merkezi</div>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            @if (User.HasModulePermission(SystemModules.Announcements))
+            {
+                <a asp-action="Announcements" class="btn btn-warning btn-sm fw-bold text-dark shadow-sm">
+                    <i class="bi bi-megaphone-fill me-1"></i> Duyuru Yönetimi
+                </a>
+                <a asp-action="EmergencyAlert" class="btn btn-outline-danger btn-sm fw-semibold shadow-sm">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Acil Bant
+                </a>
+            }
+            @if (User.HasModulePermission(SystemModules.IssueTracker))
+            {
+                <a asp-controller="Ticket" asp-action="Index" class="btn btn-outline-danger btn-sm fw-semibold shadow-sm">
+                    <i class="bi bi-tools me-1"></i> Arıza Talepleri (@(ViewBag.TicketCount ?? 0))
+                </a>
+            }
+            @if (User.HasModulePermission(SystemModules.Cafeteria))
+            {
+                <a asp-controller="Cafeteria" asp-action="Index" class="btn btn-outline-success btn-sm fw-semibold shadow-sm">
+                    <i class="bi bi-cup-hot-fill me-1"></i> Yemek Listesi
+                </a>
+            }
+            @if (User.IsSuperAdmin())
+            {
+                <a asp-action="BackupDatabase" class="btn btn-outline-success btn-sm fw-semibold shadow-sm" title="Tüm veritabanının JSON yedeğini anında indirir">
+                    <i class="bi bi-database-down me-1"></i> Veritabanı Yedeği
+                </a>
+                <a asp-action="Users" class="btn btn-outline-dark btn-sm fw-semibold shadow-sm">
+                    <i class="bi bi-shield-lock me-1"></i> Kullanıcılar
+                </a>
+            }
+            @if (User.HasModulePermission(SystemModules.Directory))
+            {
+                <a asp-controller="Personnel" asp-action="CreatePersonnel" class="btn btn-primary btn-sm fw-bold shadow-sm" style="background-color: var(--primary-color);">
+                    <i class="bi bi-plus-circle me-1"></i> Yeni Personel Ekle
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- ACİL DURUM BİLGİLENDİRME ROZETİ (EĞER AKTİFSE) -->
+    @if (alert != null && alert.IsActive)
+    {
+        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center justify-content-between mb-4 py-2 px-3">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-broadcast fs-5 text-danger animate-pulse"></i>
+                <div>
+                    <strong>Acil Durum Şeridi Yayında:</strong> @alert.Title - @alert.Message
+                </div>
+            </div>
+            @if (User.HasModulePermission(SystemModules.Announcements))
+            {
+                <a asp-action="EmergencyAlert" class="btn btn-danger btn-sm py-0 px-2 fw-semibold">Şeridi Yönet</a>
+            }
+        </div>
+    }
+
+    <!-- İSTATİSTİK KARTLARI -->
+    @if (User.IsSuperAdmin() || User.HasModulePermission(SystemModules.IssueTracker))
+    {
+        <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-primary h-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-bold text-uppercase">Kayıtlı Personel</div>
+                            <div class="fs-3 fw-bold text-dark mt-1">@ViewBag.PersonnelCount</div>
+                        </div>
+                        <div class="fs-1 text-primary opacity-25"><i class="bi bi-people-fill"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-danger h-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-danger small fw-bold text-uppercase">Bekleyen Arıza Talebi</div>
+                            <div class="fs-3 fw-bold text-danger mt-1">@ViewBag.TicketCount</div>
+                        </div>
+                        <div class="fs-1 text-danger opacity-25"><i class="bi bi-tools"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-warning h-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-bold text-uppercase">Birim / Mahkeme</div>
+                            <div class="fs-3 fw-bold text-dark mt-1">@ViewBag.UnitCount</div>
+                        </div>
+                        <div class="fs-1 text-warning opacity-25"><i class="bi bi-building"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-info h-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-bold text-uppercase">Sistem Kullanıcıları</div>
+                            <div class="fs-3 fw-bold text-dark mt-1">@ViewBag.UserCount</div>
+                        </div>
+                        <div class="fs-1 text-info opacity-25"><i class="bi bi-person-badge"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- HIZLI YÖNETİM MODÜL KARTLARI -->
+    <div class="row g-3 mb-4">
+        @if (User.HasModulePermission(SystemModules.Directory))
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-person-lines-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Telefon Rehberi</h5>
+                    </div>
+                    <p class="text-muted small">Adliye personeli, dahili numaralar, oda ve kat bilgilerini yönetin.</p>
+                    <div class="mt-auto d-flex gap-2">
+                        <a asp-controller="Personnel" asp-action="Index" class="btn btn-outline-primary btn-sm w-100 fw-semibold">Personel Listesi</a>
+                        <a asp-controller="Personnel" asp-action="CreatePersonnel" class="btn btn-primary btn-sm px-3" style="background-color: var(--primary-color);"><i class="bi bi-plus-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-diagram-3-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Birimler & Mahkemeler</h5>
+                    </div>
+                    <p class="text-muted small">Mahkeme, savcılık büroları ve müdürlükleri yapılandırın.</p>
+                    <div class="mt-auto">
+                        <a asp-controller="Unit" asp-action="Index" class="btn btn-outline-success btn-sm w-100 fw-semibold">Birimleri Yönet</a>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+        @if (User.HasModulePermission(SystemModules.Duties))
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-calendar-event fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Nöbetçi Birimler</h5>
+                    </div>
+                    <p class="text-muted small">Günlük nöbetçi mahkemeleri, savcıları ve noterleri ayarlayın.</p>
+                    <div class="mt-auto">
+                        <a asp-action="DailyDuties" class="btn btn-outline-warning btn-sm w-100 fw-semibold text-dark">Nöbetçileri Yönet</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (User.HasModulePermission(SystemModules.IssueTracker))
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-danger bg-opacity-10 text-danger">
+                            <i class="bi bi-tools fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Bilişim Arıza & Helpdesk</h5>
+                    </div>
+                    <div class="mt-auto d-flex gap-2">
+                        <a asp-controller="Ticket" asp-action="Index" class="btn btn-outline-danger btn-sm w-100 fw-semibold">Talepleri İncele</a>
+                        <a asp-controller="Ticket" asp-action="SupportTechnicians" class="btn btn-outline-secondary btn-sm px-2" title="Teknik Ekip & İzin Yönetimi">
+                            <i class="bi bi-people-fill"></i>
+                        </a>
+                        <a asp-controller="Ticket" asp-action="TicketCategories" class="btn btn-outline-secondary btn-sm px-2" title="Arıza Kategörileri">
+                            <i class="bi bi-tags-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        @if (User.HasModulePermission(SystemModules.Announcements))
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-megaphone-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Duyuru & Haber Yönetimi</h5>
+                    </div>
+                    <p class="text-muted small">Ana sayfadaki güncel kurumsal duyuruları, haberleri, anlaşmaları ekleyin ve düzenleyin.</p>
+                    <div class="mt-auto d-flex gap-2">
+                        <a asp-action="Announcements" class="btn btn-outline-warning btn-sm w-100 fw-semibold text-dark">Duyuruları Yönet</a>
+                        <a asp-action="CreateAnnouncement" class="btn btn-warning btn-sm px-3 text-dark fw-bold" title="Yeni Duyuru Ekle"><i class="bi bi-plus-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-danger bg-opacity-10 text-danger">
+                            <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Acil Durum / Kırmızı Bant</h5>
+                    </div>
+                    <p class="text-muted small">Portalın üst kısmında tüm personelin görebileceği kritik anons şeridini açıp kapatın.</p>
+                    <div class="mt-auto">
+                        <a asp-action="EmergencyAlert" class="btn btn-outline-danger btn-sm w-100 fw-semibold">Acil Şeridi Düzenle</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (User.HasModulePermission(SystemModules.Cafeteria))
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-cup-hot-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Yemek Listesi & Excel</h5>
+                    </div>
+                    <p class="text-muted small">Aylık yemek listelerini Excel olarak sisteme yükleyin ve günün menüsünü yönetin.</p>
+                    <div class="mt-auto">
+                        <a asp-controller="Cafeteria" asp-action="Index" class="btn btn-outline-success btn-sm w-100 fw-semibold">Menüyü Yönet & Excel Yükle</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (User.IsSuperAdmin())
+        {
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-dark bg-opacity-10 text-dark">
+                            <i class="bi bi-shield-lock-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Kullanıcılar & Denetim</h5>
+                    </div>
+                    <p class="text-muted small">Admin kullanıcılarını, moduler yetkilerini ve sistem işlem günlüklerini yönetin.</p>
+                    <div class="mt-auto d-flex gap-2">
+                        <a asp-action="Users" class="btn btn-outline-dark btn-sm w-100 fw-semibold">Kullanıcılar</a>
+                        <a asp-action="AuditLogs" class="btn btn-outline-secondary btn-sm" title="Audit Log / Güvenlik Günlüğü"><i class="bi bi-clock-history"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="card border-0 shadow-sm p-3 h-100 rounded-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="p-2 rounded bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-gear-fill fs-5"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-0">Sistem & İçerik Yönetimi</h5>
+                    </div>
+                    <p class="text-muted small">Sistem ayarlarını, destek dahililerini ve sık sorulan soruları düzenleyin.</p>
+                    <div class="mt-auto d-flex gap-2">
+                        <a asp-action="SiteSettings" class="btn btn-outline-primary btn-sm w-50 fw-semibold">Ayarlar</a>
+                        <a asp-action="HelpdeskFaqs" class="btn btn-outline-info btn-sm w-50 fw-semibold">Hızlı Yardım (SSS)</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (User.IsSuperAdmin() || User.HasModulePermission(SystemModules.IssueTracker))
+    {
+        <!-- İKİ SÜTUN: SON ARIZALAR & SON PERSONELLER -->
+        <div class="row g-4">
+        <!-- SON ARIZA BİLDİRİMLERİ -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-dark"><i class="bi bi-tools text-danger me-1"></i> Son Arıza & Destek Talepleri</span>
+                    <a asp-controller="Ticket" asp-action="Index" class="btn btn-sm btn-link text-decoration-none p-0">Tümünü Gör</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Talep Eden</th>
+                                <th>Kategöri</th>
+                                <th>Durum</th>
+                                <th>Tarih</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!recentTickets.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">Aktif arıza talebi bulunmuyor.</td>
+                                </tr>
+                            }
+                            @foreach (var t in recentTickets)
+                            {
+                                var sBadge = t.Status switch
+                                {
+                                    "Yeni" => "bg-danger text-white",
+                                    "İşlemde" => "bg-primary text-white",
+                                    "Çözüldü" => "bg-success text-white",
+                                    _ => "bg-light text-dark border"
+                                };
+
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold text-dark">@t.RequesterName</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">Dahili: @t.RequesterPhone | @t.RequesterUnit</div>
+                                    </td>
+                                    <td><span class="badge bg-light text-dark border">@t.Category</span></td>
+                                    <td><span class="badge @sBadge">@t.Status</span></td>
+                                    <td class="text-muted font-monospace">@t.CreatedAt.ToString("dd.MM HH:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SON EKLENEN PERSONELLER -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-dark"><i class="bi bi-people-fill text-primary me-1"></i> Son Eklenen Personeller</span>
+                    <a asp-controller="Personnel" asp-action="Index" class="btn btn-sm btn-link text-decoration-none p-0">Tümünü Gör</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Adı Soyadı</th>
+                                <th>Birim / Unvan</th>
+                                <th>Dahili</th>
+                                <th>Oda</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">Kayıtlı personel bulunmuyor.</td>
+                                </tr>
+                            }
+                            @foreach (var p in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-dark">@p.FullName</td>
+                                    <td>
+                                        <div class="text-dark">@(p.Unit?.Name ?? "-")</div>
+                                        <div class="text-muted" style="font-size: 0.75rem;">@p.Title</div>
+                                    </td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success border border-success">@p.InternalNumber</span></td>
+                                    <td class="text-muted">@(p.RoomNumber ?? "-")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.12/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/ticketHub")
+            .configureLogging(signalR.LogLevel.Informatıon)
+            .build();
+
+        connection.on("ReceiveTicketNotification", (ticketId, requesterName, category) => {
+            // Show a Toast notification or Alert
+            const toastHtml = `
+                <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 1055;">
+                  <div class="d-flex">
+                    <div class="toast-body">
+                      <strong>Yeni Arıza Talebi!</strong><br/>
+                      #$ - $ - $
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', toastHtml);
+            
+            // Auto close after 10s
+            setTimeout(() => {
+                const toasts = document.querySelectorAll('.toast');
+                toasts.forEach(t => t.remove());
+            }, 10000);
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+    </script>
+}

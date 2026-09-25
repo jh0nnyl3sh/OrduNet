@@ -1,0 +1,117 @@
+﻿@model List<OrduNet.Web.Models.Entities.HelpdeskFaq>
+@inject OrduNet.Web.Services.ISiteSettingsService SettingsService
+@{
+    ViewData["Title"] = "Bilgi İşlem Destek";
+}
+
+<!-- Sayfa Bağlı�� -->
+<div class="bg-white border-bottom shadow-sm mb-4">
+    <div class="container py-4">
+        <div class="d-flex align-items-center gap-3">
+            <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <i class="bi bi-headset fs-4"></i>
+            </div>
+            <div>
+                <h4 class="fw-bold text-dark mb-1">Bilgi İşlem Destek Merkezi</h4>
+                <p class="text-muted mb-0 small">Teknik sorunlarınız, rehber güncellemeleriniz ve kılavuzlar için destek kanalları.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row g-4">
+        
+        <!-- Sol Sütun: İletişim & Kılavuzlar -->
+        <div class="col-lg-4">
+            
+            <!-- İletişim Kartı -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h6 class="fw-bold text-dark mb-0"><i class="bi bi-telephone text-primary me-2"></i>İletişim Kanalları</h6>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item p-3">
+                            <div class="text-muted fw-semibold mb-1" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">şef</div>
+                            <div class="fw-bold text-dark d-flex align-items-center">
+                                <i class="bi bi-telephone-inbound-fill text-success me-2"></i>Dahili: @SettingsService.GetSetting("IT_Chief_Ext", "1012")
+                            </div>
+                        </li>
+                        <li class="list-group-item p-3 bg-light">
+                            <div class="text-muted fw-semibold mb-1" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Bilişim & Yazıl�m Sorumlusu</div>
+                            <div class="fw-bold text-dark d-flex align-items-center">
+                                <i class="bi bi-telephone-inbound-fill text-success me-2"></i>Dahili: @SettingsService.GetSetting("IT_Software_Ext", "1014")
+                            </div>
+                        </li>
+                        <li class="list-group-item p-3">
+                            <div class="text-muted fw-semibold mb-1" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Donanım, A� & Yazıc� Masası</div>
+                            <div class="fw-bold text-dark d-flex align-items-center">
+                                <i class="bi bi-telephone-inbound-fill text-success me-2"></i>Dahili: @SettingsService.GetSetting("IT_Hardware_Ext", "1013 / 1014")
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Kılavuzlar Kartı -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h6 class="fw-bold text-dark mb-0"><i class="bi bi-journals text-danger me-2"></i>Kılavuzlar ve Bağlant�lar</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <a href="~/docs/E-imza Bağvuru Yapma.pdf" target="_blank" class="list-group-item list-group-item-action p-3 d-flex gap-3 align-items-start">
+                            <i class="bi bi-file-earmark-pdf-fill text-danger fs-5 mt-1"></i>
+                            <div>
+                                <div class="fw-semibold text-dark small mb-1">E-imza Bağvuru Kılavuzu</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">E-imza bağvurusu adımlar�n� anlat�r.</div>
+                            </div>
+                        </a>
+                        <a href="~/docs/E-imza Yeni Şifre Alma.pdf" target="_blank" class="list-group-item list-group-item-action p-3 d-flex gap-3 align-items-start bg-light">
+                            <i class="bi bi-file-earmark-pdf-fill text-danger fs-5 mt-1"></i>
+                            <div>
+                                <div class="fw-semibold text-dark small mb-1">E-imza Şifre Alma Kılavuzu</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">Şifre bloke/unutma durumunda uygulanır.</div>
+                            </div>
+                        </a>
+                        <a href="https://şifre.uyap.gov.tr/" target="_blank" class="list-group-item list-group-item-action p-3 d-flex gap-3 align-items-start">
+                            <i class="bi bi-box-arrow-up-right text-primary fs-5 mt-1"></i>
+                            <div>
+                                <div class="fw-semibold text-primary small mb-1">UYAP Şifre İşlemleri</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">şifre.uyap.gov.tr adresine gitmek için tıklay�n.</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Sütun: Hızlı Yardım / Sık Sorulan Sorular -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-bottom py-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-lightning-fill text-warning"></i>
+                    <h6 class="fw-bold text-dark mb-0">Hızlı Yardım & Sık Sorulan Sorular</h6>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        @foreach (var faq in Model)
+                        {
+                            <div class="col">
+                                <div class="d-flex gap-3">
+                                    <div class="text-secondary"><i class="bi @faq.IconClass fs-5"></i></div>
+                                    <div>
+                                        <div class="fw-semibold text-dark small mb-1">@faq.Question</div>
+                                        <div class="text-muted" style="font-size: 0.8rem; line-height: 1.5;">@faq.Answer</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

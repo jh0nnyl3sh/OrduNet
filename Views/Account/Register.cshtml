@@ -1,0 +1,102 @@
+﻿@model OrduNet.Web.Models.ViewModels.RegisterViewModel
+@inject OrduNet.Web.Services.ISiteSettingsService SettingsService
+@{
+    ViewData["Title"] = "Yeni Kullanıcı Kaydı";
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <!-- üst Bağlık -->
+                <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #153b44 0%, #1b4b57 100%);">
+                    <div class="mb-3 d-inline-flex align-items-center justify-content-center" 
+                         style="width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 50%; border: 2px solid var(--accent-gold);">
+                        <i class="bi bi-person-plus-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1">Personel Kaydı</h4>
+                    <p class="text-white-50 small mb-0">Lütfen bilgilerinizi eksiksiz doldurunuz.</p>
+                </div>
+
+                <!-- Form Gövdesi -->
+                <div class="card-body p-4">
+                    <form asp-action="Register" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                        <div class="row g-3">
+                            <!-- Kullanıcı Adı (Sicil/TC) -->
+                            <div class="col-md-6">
+                                <label asp-for="Username" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="Username" class="form-control" placeholder="Örn: 123456" autofocus />
+                                <span asp-validation-for="Username" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Ad Soyad -->
+                            <div class="col-md-6">
+                                <label asp-for="FullName" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="FullName" class="form-control" placeholder="Örn: Ahmet Yılmaz" />
+                                <span asp-validation-for="FullName" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Birim / Mahkeme -->
+                            <div class="col-12">
+                                <label asp-for="Unit" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="Unit" class="form-control" placeholder="Örn: 1. Asliye Hukuk Mahkemesi" />
+                                <span asp-validation-for="Unit" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Dahili ve Oda No -->
+                            <div class="col-md-6">
+                                <label asp-for="Phone" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="Phone" class="form-control" placeholder="Örn: 2145" />
+                                <span asp-validation-for="Phone" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="RoomNumber" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="RoomNumber" class="form-control" placeholder="Örn: Kat 2, 214" />
+                                <span asp-validation-for="RoomNumber" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Şifre ve Tekrarı -->
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="Password" class="form-control" placeholder="��������" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label small fw-bold text-secondary"></label>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="��������" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Kayıt Butonu -->
+                        <div class="d-grid mt-4 mb-3">
+                            <button type="submit" class="btn btn-warning py-2 fw-bold text-dark shadow-sm">
+                                <i class="bi bi-person-check-fill me-1"></i> Hesabımı Oluştur
+                            </button>
+                        </div>
+
+                        <div class="text-center d-flex flex-column gap-2">
+                            <a asp-action="Login" class="text-decoration-none small text-primary fw-bold">
+                                Zaten hesabınız var m�? Giriş Yapın
+                            </a>
+                            <a asp-controller="Home" asp-action="Index" class="text-decoration-none small text-muted">
+                                <i class="bi bi-arrow-left me-1"></i> Ana Sayfaya Geri Dün
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

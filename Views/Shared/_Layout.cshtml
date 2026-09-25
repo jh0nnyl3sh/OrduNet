@@ -1,0 +1,300 @@
+﻿@inject OrduNet.Web.Data.OrduNetDbContext _dbContext
+@using OrduNet.Web.Services
+@using Microsoft.AspNetCore.Identity
+@inject OrduNet.Web.Services.ISiteSettingsService SettingsService
+@{
+    var activeEmergencyAlert = _dbContext.EmergencyAlerts.FirstOrDefault(a => a.IsActive);
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @SettingsService.GetSetting("Site_Title_Suffix", "OrduNet | T.C. Ordu Adalet Sarayı")</title>
+    
+    <!-- Yerel Fontlar (Self-Hosted Inter - %100 Türkçe Karakter Destekli) -->
+    <link rel="stylesheet" href="~/fonts/inter/inter.css" asp-append-version="true" />
+    
+    <!-- Bootstrap & Yerel İkonlar (Self-Hosted Bootstrap Icons) -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" asp-append-version="true" />
+    
+    <!-- OrduNet Kurumsal Tema -->
+    <link rel="stylesheet" href="~/css/ordunet-theme.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- 1. ÜST BİLGİ ÇUBUĞU (TOPBAR) -->
+    <div class="ordunet-topbar">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap">
+            <div class="topbar-left d-flex align-items-center">
+                <span><i class="bi bi-geo-alt-fill text-warning me-1"></i> @SettingsService.GetSetting("Courthouse_Name_Location", "T.C. Ordu Adalet Sarayı, Altınordu / Ordu")</span>
+                <span class="topbar-divider">|</span>
+                <span class="d-none d-md-inline"><i class="bi bi-calendar3 me-1"></i> @DateTime.Now.ToString("dd MMMM yyyy, dddd")</span>
+            </div>
+            <div class="topbar-right d-flex align-items-center">
+                <a href="tel:@SettingsService.GetSetting("Contact_Phone_Raw", "04527002000")"><i class="bi bi-telephone-fill me-1"></i> @SettingsService.GetSetting("Contact_Phone", "Santral: 0452 700 20 00")</a>
+                <span class="topbar-divider">|</span>
+                <a href="@SettingsService.GetSetting("Webmail_Url", "https://eposta.adalet.gov.tr")" target="_blank" rel="noopener"><i class="bi bi-envelope-at me-1"></i> E-Posta</a>
+                <span class="topbar-divider">|</span>
+                <a href="@SettingsService.GetSetting("Uyap_Url", "https://portal.uyap.gov.tr")" target="_blank" rel="noopener"><i class="bi bi-shield-lock me-1"></i> UYAP</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. KURUMSAL HEADER -->
+    <header class="ordunet-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a asp-controller="Home" asp-action="Index" class="header-brand">
+                <div class="brand-emblem">
+                    <!-- Yerel Simge / Logo (wwwroot/icons/logo.svg) -->
+                    <img src="~/icons/logo.svg" alt="T.C. Ordu Adalet Sarayı" asp-append-version="true" />
+                </div>
+                <div class="brand-title-wrap">
+                    <h1>@SettingsService.GetSetting("Header_Title", "Ordu Adliyesi")</h1>
+                    <div class="sub-title">@Html.Raw(SettingsService.GetSetting("Header_Subtitle", "T.C. Ordu Adalet Sarayı Bilişim Portalı &bull; OrduNet"))</div>
+                </div>
+            </a>
+
+            <div class="header-actions d-flex align-items-center gap-2">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-light dropdown-toggle d-flex align-items-center gap-1 py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #ffffff; border-color: rgba(255,255,255,0.4); background-color: rgba(255,255,255,0.08);">
+                            <i class="bi bi-person-circle text-warning"></i>
+                            <span class="small fw-semibold">@User.Identity.Name</span>
+                            @if (User.IsSuperAdmin())
+                            {
+                                <i class="bi bi-star-fill text-warning small ms-1" title="Super Yönetici"></i>
+                            }
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+                            <li><h6 class="dropdown-header">Hesabım</h6></li>
+                            <li>
+                                <a class="dropdown-item py-1" asp-controller="Account" asp-action="Profile">
+                                    <i class="bi bi-person-fill text-success me-2"></i> Profil Bilgilerim
+                                </a>
+                            </li>
+                            @if (User.IsSuperAdmin() || User.HasModulePermission(SystemModules.Announcements) || User.HasModulePermission(SystemModules.IssueTracker) || User.HasModulePermission(SystemModules.Cafeteria))
+                            {
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">Yönetim Menüsü</h6></li>
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Admin" asp-action="Index">
+                                        <i class="bi bi-speedometer2 text-primary me-2"></i> Yönetim Paneli
+                                    </a>
+                                </li>
+                            }
+                            @if (User.HasModulePermission(SystemModules.Announcements))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Admin" asp-action="Announcements">
+                                        <i class="bi bi-megaphone-fill text-warning me-2"></i> Duyuru Yönetimi
+                                    </a>
+                                </li>
+                            }
+                            @if (User.HasModulePermission(SystemModules.IssueTracker))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Ticket" asp-action="Index">
+                                        <i class="bi bi-tools text-danger me-2"></i> Arıza Talepleri
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Ticket" asp-action="SupportTechnicians">
+                                        <i class="bi bi-people-fill text-primary me-2"></i> Teknik Ekip & İzinler
+                                    </a>
+                                </li>
+                            }
+                            @if (User.HasModulePermission(SystemModules.Cafeteria))
+                            {
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Cafeteria" asp-action="Index">
+                                        <i class="bi bi-cup-hot-fill text-warning me-2"></i> Yemek Listesi & Excel
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsSuperAdmin())
+                            {
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Admin" asp-action="Users">
+                                        <i class="bi bi-people-fill text-info me-2"></i> Kullanıcı Yönetimi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-1" asp-controller="Admin" asp-action="BackupDatabase">
+                                        <i class="bi bi-download text-success me-2"></i> Veritabanı Yedeği
+                                    </a>
+                                </li>
+                            }
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="dropdown-item py-1 text-danger">
+                                        <i class="bi bi-box-arrow-right text-danger me-2"></i> Güvenli Çıkış
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <a asp-controller="Account" asp-action="Profile" class="btn-admin-login">
+                        <i class="bi bi-person-check-fill"></i> Hesabım
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn-admin-login">
+                        <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+                    </a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. MENÜ ÇUBUĞU (NAVBAR) -->
+    <nav class="navbar navbar-expand-lg ordunet-nav">
+        <div class="container">
+            <button class="navbar-toggler text-white border-0 py-2" type="button" data-bs-toggle="collapse" data-bs-target="#ordunetNavContent">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="ordunetNavContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" 
+                           asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door-fill"></i> Ana Sayfa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Directory" ? "active" : "")" 
+                           asp-controller="Directory" asp-action="Index">
+                            <i class="bi bi-telephone-inbound-fill text-warning"></i> Telefon Rehberi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Menu" ? "active" : "")" 
+                           asp-controller="Duty" asp-action="Menu">
+                            <i class="bi bi-cup-hot-fill"></i> Yemek Listesi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Duty" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" 
+                           asp-controller="Duty" asp-action="Index">
+                            <i class="bi bi-calendar-check-fill"></i> Nöbetçi Mahkemeler & Savcılık
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="SubmitIssueTicket">
+                            <i class="bi bi-tools"></i>
+                            <span>Arıza Bildirimi</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">
+                            <i class="bi bi-info-circle-fill"></i> Bilgi İşlem Destek
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center text-white-50 small">
+                    <i class="bi bi-hdd-network-fill me-1 text-success"></i> İntranet: Aktif
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ACİL DURUM BANDI (KIRMIZI BANT) -->
+    @if (activeEmergencyAlert != null)
+    {
+        var alertClass = activeEmergencyAlert.AlertLevel switch
+        {
+            "warning" => "bg-warning text-dark border-warning",
+            "info" => "bg-primary text-white border-primary",
+            _ => "bg-danger text-white border-danger"
+        };
+        var iconClass = activeEmergencyAlert.AlertLevel switch
+        {
+            "warning" => "bi-exclamation-circle-fill",
+            "info" => "bi-info-circle-fill",
+            _ => "bi-exclamation-triangle-fill"
+        };
+
+        <div class="ordunet-emergency-strip py-2 shadow-sm @alertClass" style="border-bottom: 2px solid rgba(0,0,0,0.15);">
+            <div class="container d-flex align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-2 overflow-hidden">
+                    <span class="badge bg-white text-danger fw-bold text-uppercase px-2 py-1 shadow-sm">
+                        <i class="bi @iconClass me-1"></i> ACİL DUYURU
+                    </span>
+                    <strong class="text-nowrap">@activeEmergencyAlert.Title:</strong>
+                    <span class="text-truncate">@activeEmergencyAlert.Message</span>
+                </div>
+                <div class="d-none d-md-flex align-items-center gap-2 text-nowrap small opacity-75">
+                    <i class="bi bi-clock-history"></i> @activeEmergencyAlert.UpdatedAt.ToString("HH:mm")
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- BİLDİRİM / MESAJ ALANI -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert">
+                <i class="bi bi-check-circle-fill fs-5 me-2"></i>
+                <div>@TempData["SuccessMessage"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+            </div>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+                <div>@TempData["ErrorMessage"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+            </div>
+        </div>
+    }
+
+    <!-- 4. SAYFA İÇERİĞİ -->
+    <main role="main" class="flex-grow-1">
+        @RenderBody()
+    </main>
+
+    <!-- KOPYALANDI TOAST BİLDİRİMİ -->
+    <div id="copyToast" class="copy-toast">
+        <i class="bi bi-clipboard-check-fill text-warning fs-5"></i>
+        <span class="toast-message">Dahili kopyalandı!</span>
+    </div>
+
+
+
+    <!-- 5. KURUMSAL FOOTER (BAKIRKÖY MODELİ 4 SÜTUNLU) -->
+    <footer class="ordunet-footer">
+        <div class="container footer-main">
+            <div class="row g-4">
+                <!-- Footer columns kept unchanged -->
+            </div>
+        </div>
+
+        <!-- En Alt Künye Çubuğu -->
+        <div class="footer-bottom">
+            <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    @Html.Raw(SettingsService.GetSetting("Footer_Copyright", "&copy; 2026 <strong>T.C. Ordu Adliyesi</strong> — OrduNet İç Ağ Portalı. Tüm hakları saklıdır."))
+                </div>
+                <div class="text-white-50">
+                    Tasarım & Geliştirme: <span>@SettingsService.GetSetting("Designers", "Uğur BAŞDAŞ - Murat ALTUN")</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scriptler -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/ordunet-directory.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

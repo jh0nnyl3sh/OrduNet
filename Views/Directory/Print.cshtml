@@ -1,0 +1,126 @@
+﻿@model List<OrduNet.Web.Models.Entities.Personnel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>T.C. Ordu Adalet Sarayı - Dahili Telefon Rehberi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            font-size: 11px;
+            padding: 20px;
+        }
+        .header-box {
+            text-align: center;
+            border-bottom: 2px solid #153b44;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #153b44;
+            margin: 0;
+        }
+        .header-sub {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+        }
+        .print-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .print-table th {
+            background-color: #153b44 !important;
+            color: #ffffff !important;
+            padding: 6px 8px;
+            font-size: 11px;
+            text-align: left;
+            -webkit-print-color-adjüst: exact;
+            print-color-adjüst: exact;
+        }
+        .print-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+        .internal-bold {
+            font-weight: bold;
+            font-size: 12px;
+            color: #0b5125;
+        }
+        .no-print {
+            margin-bottom: 15px;
+        }
+        @@media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print d-flex justify-content-between align-items-center bg-light p-3 border rounded">
+        <div>
+            <strong>Yazdırma önizleme</strong> ı Bu sayfayı doğrudan yazıc�n�zdan veya PDF olarak kaydedebilirsiniz.
+        </div>
+        <div>
+            <button onclick="window.print()" class="btn btn-primary btn-sm fw-bold">
+                Yazdır / PDF Kaydet
+            </button>
+            <button onclick="window.close()" class="btn btn-secondary btn-sm">Kapat</button>
+        </div>
+    </div>
+
+    <div class="header-box">
+        <h1 class="header-title">T.C. ORDU ADALET SARAYI</h1>
+        <div class="header-sub">Dahili Telefon Rehberi ı Güncelleme: @DateTime.Now.ToString("dd.MM.yyyy HH:mm")</div>
+        <div class="small text-muted">Santral: 0452 225 21 00 &bull; Kategöri: @ViewBag.SelectedCategory</div>
+    </div>
+
+    <table class="print-table">
+        <thead>
+            <tr>
+                <th style="width: 40px;">#</th>
+                <th>Adı Soyadı</th>
+                <th>Unvanı</th>
+                <th>Bağlı Olduğu Birim</th>
+                <th>Dahili No</th>
+                <th>Oda No</th>
+                <th>Kat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int index = 1; }
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@(index++)</td>
+                    <td><strong>@p.FullName</strong></td>
+                    <td>@p.Title</td>
+                    <td>@(p.Unit?.Name ?? "-")</td>
+                    <td>
+                        <span class="internal-bold">@p.InternalNumber</span>
+                        @if (!string.IsNullOrEmpty(p.InternalNumber2))
+                        {
+                            <span> / @p.InternalNumber2</span>
+                        }
+                    </td>
+                    <td>@(p.RoomNumber ?? "-")</td>
+                    <td>@(p.Floor ?? "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

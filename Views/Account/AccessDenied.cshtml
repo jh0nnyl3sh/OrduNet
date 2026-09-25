@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Erişim Yetkişi Yok";
+    Layout = "_Layout";
+}
+
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4 rounded-4">
+                <div class="display-3 text-danger mb-3">
+                    <i class="bi bi-shield-x"></i>
+                </div>
+                <h3 class="fw-bold text-dark mb-2">Bu Alana Erişim Yetkiniz Bulunmuyor</h3>
+                <p class="text-muted mb-4">
+                    Göruntülemeye �al��t���n�z modül veya işlem için kullanıcı hesabınıza tanımlanmış bir yetki bulunmamaktadır.
+                    Yetki talebi için lütfen sistem yöneticişi veya Bilgi İşlem şefliği ile iletişime geçiniz.
+                </p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm px-4">
+                        <i class="bi bi-house-door me-1"></i> Ana Sayfa
+                    </a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Admin" asp-action="Index" class="btn btn-primary btn-sm px-4" style="background-color: var(--primary-color);">
+                            <i class="bi bi-speedometer2 me-1"></i> Yönetim Paneli
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm px-4 text-dark fw-bold">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Giriş Yap
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

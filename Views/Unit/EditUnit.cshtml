@@ -1,0 +1,66 @@
+﻿@model OrduNet.Web.Models.Entities.Unit
+@{
+    ViewData["Title"] = "Birim / Mahkeme Düzenle";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
+                <i class="bi bi-pencil-square text-warning me-2"></i> Birim Düzenle
+            </h2>
+            <div class="text-muted small">@Model.Name bilgilerini güncelleyin</div>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> İptal ve Geri Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-4">
+            <form asp-action="EditUnit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Birim / Mahkeme Adı *</label>
+                        <input type="text" asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Kategori *</label>
+                        <select asp-for="Category" class="form-select" required>
+                            <option value="Cumhuriyet Başsavcılığı">Cumhuriyet Başsavcılığı</option>
+                            <option value="Ceza Mahkemeleri">Ceza Mahkemeleri</option>
+                            <option value="Hukuk Mahkemeleri">Hukuk Mahkemeleri</option>
+                            <option value="İcra & İflas">İcra & İflas</option>
+                            <option value="İdari Birimler">İdari Birimler</option>
+                            <option value="Diğer">Diğer</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Konum / Kat / Kalem No</label>
+                        <input type="text" asp-for="Location" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Göruntülenme Sıralaması</label>
+                        <input type="number" asp-for="DisplayOrder" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary fw-bold">
+                        <i class="bi bi-check2-circle me-1"></i> Değişiklikleri Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

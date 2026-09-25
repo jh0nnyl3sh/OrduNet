@@ -1,0 +1,390 @@
+﻿@model List<OrduNet.Web.Models.Entities.IssueTicket>
+@{
+    ViewData["Title"] = "Arıza & Destek Talepleri (Helpdesk)";
+    Layout = "_Layout";
+    string selectedStatus = ViewBag.SelectedStatus as string ?? "Tümü";
+    var technicians = ViewBag.Technicians as List<OrduNet.Web.Models.Entities.SupportTechnician> ?? new List<OrduNet.Web.Models.Entities.SupportTechnician>();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Arıza Talepleri</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-tools text-danger me-2"></i> Bilişim Arıza & Destek Talepleri</h3>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="ExportIssueTicketsExcel" asp-route-status="@selectedStatus" class="btn btn-success btn-sm fw-bold shadow-sm">
+                <i class="bi bi-file-earmark-excel-fill me-1"></i> Rapor Al (Excel)
+            </a>
+            <a asp-action="SupportTechnicians" class="btn btn-warning btn-sm text-dark fw-bold shadow-sm">
+                <i class="bi bi-people-fill me-1"></i> Teknik Ekip & İzin Yönetimi
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panele Dön
+            </a>
+        </div>
+    </div>
+
+
+
+    <!-- Durum Sayaçları -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <a asp-action="Index" asp-route-status="Tümü" class="card border-0 shadow-sm text-decoration-none text-dark h-100 @(selectedStatus == "Tümü" ? "border border-2 border-dark" : "")">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small fw-semibold">Toplam Talep</div>
+                        <div class="fs-4 fw-bold text-dark">@ViewBag.TotalCount</div>
+                    </div>
+                    <div class="rounded-circle bg-secondary bg-opacity-10 p-3 text-secondary">
+                        <i class="bi bi-inbox fs-4"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-action="Index" asp-route-status="Yeni" class="card border-0 shadow-sm text-decoration-none text-dark h-100 @(selectedStatus == "Yeni" ? "border border-2 border-danger" : "")">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-danger small fw-semibold">Yeni / Bekleyen</div>
+                        <div class="fs-4 fw-bold text-danger">@ViewBag.OpenCount</div>
+                    </div>
+                    <div class="rounded-circle bg-danger bg-opacity-10 p-3 text-danger">
+                        <i class="bi bi-exclamation-octagon fs-4"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-action="Index" asp-route-status="İşlemde" class="card border-0 shadow-sm text-decoration-none text-dark h-100 @(selectedStatus == "İşlemde" ? "border border-2 border-primary" : "")">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-primary small fw-semibold">İnceleniyor / İşlemde</div>
+                        <div class="fs-4 fw-bold text-primary">@ViewBag.InProgressCount</div>
+                    </div>
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 text-primary">
+                        <i class="bi bi-hourglass-split fs-4"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-action="Index" asp-route-status="Çözüldü" class="card border-0 shadow-sm text-decoration-none text-dark h-100 @(selectedStatus == "Çözüldü" ? "border border-2 border-success" : "")">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-success small fw-semibold">Sonuçlanan / Çözüldü</div>
+                        <div class="fs-4 fw-bold text-success">@ViewBag.ResolvedCount</div>
+                    </div>
+                    <div class="rounded-circle bg-success bg-opacity-10 p-3 text-success">
+                        <i class="bi bi-check-circle fs-4"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtre & Tablo -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span class="fw-bold text-dark"><i class="bi bi-card-checklist me-1"></i> Arıza Bildirimleri (@Model.Count)</span>
+            <div class="d-flex gap-2 align-items-center">
+                <span class="small text-muted">Filtre:</span>
+                <div class="btn-group btn-group-sm">
+                    <a asp-action="Index" asp-route-status="Tümü" class="btn @(selectedStatus == "Tümü" ? "btn-dark" : "btn-outline-secondary")">Tümü</a>
+                    <a asp-action="Index" asp-route-status="Yeni" class="btn @(selectedStatus == "Yeni" ? "btn-danger" : "btn-outline-danger")">Yeni</a>
+                    <a asp-action="Index" asp-route-status="İşlemde" class="btn @(selectedStatus == "İşlemde" ? "btn-primary" : "btn-outline-primary")">İşlemde</a>
+                    <a asp-action="Index" asp-route-status="Çözüldü" class="btn @(selectedStatus == "Çözüldü" ? "btn-success" : "btn-outline-success")">Çözüldü</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th style="width: 70px;">Talep No</th>
+                        <th>Talep Eden</th>
+                        <th>Birim & Konum</th>
+                        <th>Kategori</th>
+                        <th style="min-width: 220px;">Konu & Açıklama</th>
+                        <th>Atanan Personel</th>
+                        <th class="text-center">Durum</th>
+                        <th>Tarih</th>
+                        <th class="text-end" style="width: 220px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center py-5 text-muted">
+                                <i class="bi bi-clipboard-check fs-1 d-block mb-2 text-secondary"></i>
+                                Bu filtreye uygun arıza veya destek talebi bulunmuyor.
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        var statusBadgeClass = item.Status switch
+                        {
+                            "Yeni" => "bg-danger text-white",
+                            "İşlemde" => "bg-primary text-white",
+                            "Çözüldü" => "bg-success text-white",
+                            "İptal" => "bg-secondary text-white",
+                            _ => "bg-light text-dark border"
+                        };
+
+                        var categoryBadge = item.Category switch
+                        {
+                            "Donanım / PC" => "bg-info-subtle text-info-emphasis",
+                            "UYAP / Yazılım" => "bg-primary-subtle text-primary-emphasis",
+                            "Ağ / İnternet" => "bg-warning-subtle text-warning-emphasis",
+                            "Yazıcı / Tarayıcı" => "bg-secondary-subtle text-secondary-emphasis",
+                            _ => "bg-light text-dark border"
+                        };
+
+                        <tr>
+                            <td class="fw-bold text-muted">#@item.Id</td>
+                            <td>
+                                <div class="fw-semibold text-dark">@item.RequesterName</div>
+                                <div class="small text-muted"><i class="bi bi-telephone me-1"></i>Dahili: @item.RequesterPhone</div>
+                            </td>
+                            <td>
+                                <div class="small fw-semibold text-dark">@(string.IsNullOrEmpty(item.RequesterUnit) ? "Belirtilmedi" : item.RequesterUnit)</div>
+                                @if (!string.IsNullOrEmpty(item.RoomNumber))
+                                {
+                                    <span class="badge bg-light text-dark border small"><i class="bi bi-door-closed me-1"></i>Oda: @item.RoomNumber</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge @categoryBadge px-2 py-1 small">@item.Category</span>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark small mb-1">@item.Title</div>
+                                <div class="small text-secondary" style="max-height: 80px; overflow-y: auto;">
+                                    @item.Description
+                                </div>
+                                @if (!string.IsNullOrEmpty(item.AdminNotes))
+                                {
+                                    <div class="mt-1 small text-primary bg-primary bg-opacity-10 p-1 rounded px-2">
+                                        <strong><i class="bi bi-chat-left-dots me-1"></i>Teknik Servis Notu:</strong> @item.AdminNotes
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.AssignedToName))
+                                {
+                                    <div>
+                                        <span class="badge bg-primary-subtle text-primary border px-2 py-1 small fw-semibold">
+                                            <i class="bi bi-person-fill me-1"></i>@item.AssignedToName
+                                        </span>
+                                    </div>
+                                    @if (item.AssignedAt.HasValue)
+                                    {
+                                        <div class="text-muted" style="font-size: 0.7rem;">
+                                            <i class="bi bi-clock me-1"></i>@item.AssignedAt.Value.ToString("dd.MM HH:mm")
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-muted border px-2 py-1 small">
+                                        <i class="bi bi-hourglass me-1"></i>Atama Bekliyor
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <span class="badge @statusBadgeClass px-2 py-1 small">@item.Status</span>
+                            </td>
+                            <td class="small text-muted">
+                                <div>@item.CreatedAt.ToString("dd.MM.yyyy")</div>
+                                <div class="text-secondary small">@item.CreatedAt.ToString("HH:mm")</div>
+                            </td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-1 flex-wrap justify-content-end">
+                                    <!-- Üzerine Al Butonu -->
+                                    <form asp-action="AssignTicketToSelf" method="post" class="d-inline" onsubmit="return confirm('Bu arızayı üzerinize almak istiyor musunuz?');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-outline-success btn-sm py-1 px-2" title="Arızayı Kendi Üzerine Al">
+                                            <i class="bi bi-person-check-fill"></i> <span class="small d-none d-lg-inline">Üzerine Al</span>
+                                        </button>
+                                    </form>
+
+                                    <!-- Arızayı Ata Butonu -->
+                                    <button type="button" class="btn btn-outline-dark btn-sm py-1 px-2" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#assignModal_@item.Id"
+                                            title="Sahadaki Personele Ata">
+                                        <i class="bi bi-person-plus-fill text-primary"></i> <span class="small d-none d-lg-inline">Ata</span>
+                                    </button>
+
+                                    <!-- Durum Güncelle & Not Ekle -->
+                                    <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#ticketModal_@item.Id"
+                                            title="Durum Güncelle & Not Ekle">
+                                        <i class="bi bi-pencil-square"></i> <span class="small d-none d-lg-inline">Güncelle</span>
+                                    </button>
+                                </div>
+
+                                <!-- 1. Arıza Atama Modalı -->
+                                <div class="modal fade text-start" id="assignModal_@item.Id" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 shadow">
+                                            <form asp-action="AssignTicket" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+
+                                                <div class="modal-header bg-light py-2">
+                                                    <h6 class="modal-title fw-bold text-dark">
+                                                        <i class="bi bi-person-plus-fill me-1 text-primary"></i> Talep #@item.Id Personel Ataması
+                                                    </h6>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+
+                                                <div class="modal-body p-3">
+                                                    <div class="mb-3 bg-light p-2 rounded small">
+                                                        <div class="fw-semibold text-dark">@item.RequesterName - Dahili: @item.RequesterPhone</div>
+                                                        <div class="text-muted">Birim: @(item.RequesterUnit ?? "-") | Oda: @(item.RoomNumber ?? "-")</div>
+                                                        <hr class="my-1">
+                                                        <div class="fw-bold text-dark">@item.Title</div>
+                                                        <div class="text-secondary small">@item.Description</div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label small fw-semibold text-dark">
+                                                            Görevlendirilecek Teknik Personel <span class="text-danger">*</span>
+                                                        </label>
+                                                        <select name="technicianId" class="form-select form-select-sm" required>
+                                                            <option value="">-- Görevde Olan Personeli Seçiniz --</option>
+                                                            @foreach (var tech in technicians)
+                                                            {
+                                                                if (tech.IsAvailable)
+                                                                {
+                                                                    <option value="@tech.Id" selected="@(item.AssignedTechnicianId == tech.Id)">
+                                                                        @tech.FullName - @tech.Title (@(tech.Phone ?? "Dahili Yok")) [GÖREVDE]
+                                                                    </option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@tech.Id" disabled class="text-muted bg-light">
+                                                                        @tech.FullName - @tech.Title [İZİNLİ / PASİF]
+                                                                    </option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <div class="form-text small text-muted">
+                                                            <i class="bi bi-info-circle me-1"></i> İzinli personeller seçilemez.
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label small fw-semibold text-dark">Atama Notu / Talimat (İsteğe Bağlı)</label>
+                                                        <textarea name="notes" class="form-control form-control-sm" rows="2" placeholder="Örn: 2. kat kalemine öncelikli gidilsin..."></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer bg-light py-2">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">İptal</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm px-3" style="background-color: var(--primary-color);">
+                                                        <i class="bi bi-check-lg me-1"></i> Arızayı Ata
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 2. Durum Güncelleme Modalı -->
+                                <div class="modal fade text-start" id="ticketModal_@item.Id" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 shadow">
+                                            <form asp-action="UpdateTicketStatus" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+
+                                                <div class="modal-header bg-light py-2">
+                                                    <h6 class="modal-title fw-bold text-dark">
+                                                        <i class="bi bi-tools me-1 text-danger"></i> Talep #@item.Id Güncelle
+                                                    </h6>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+
+                                                <div class="modal-body p-3">
+                                                    <div class="mb-3 bg-light p-2 rounded small">
+                                                        <div class="fw-semibold text-dark">@item.RequesterName - Dahili: @item.RequesterPhone</div>
+                                                        <div class="text-muted">Birim: @(item.RequesterUnit ?? "-") | Oda: @(item.RoomNumber ?? "-")</div>
+                                                        <hr class="my-1">
+                                                        <div class="fw-bold text-dark">@item.Title</div>
+                                                        <div class="text-secondary">@item.Description</div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label small fw-semibold text-dark">Talep Durumu</label>
+                                                        <select name="status" class="form-select form-select-sm">
+                                                            <option value="Yeni" selected="@(item.Status == "Yeni")">Yeni (Beklemede)</option>
+                                                            <option value="İşlemde" selected="@(item.Status == "İşlemde")">İşlemde (Müdahale Ediliyor)</option>
+                                                            <option value="Çözüldü" selected="@(item.Status == "Çözüldü")">Çözüldü (Tamamlandı)</option>
+                                                            <option value="İptal" selected="@(item.Status == "İptal")">İptal Edildi</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label small fw-semibold text-dark">Teknik Servis Notu / Yapılan İşlem</label>
+                                                        <textarea name="adminNotes" class="form-control form-control-sm" rows="3" placeholder="Arıza ile ilgili yapılan işlem, parça değişimi veya not...">@item.AdminNotes</textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer bg-light py-2">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Vazgeç</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm px-3" style="background-color: var(--primary-color);">
+                                                        <i class="bi bi-check-lg me-1"></i> Değişikliği Kaydet
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (ViewBag.TotalPages != null && ViewBag.TotalPages > 1)
+        {
+            <div class="card-footer bg-white py-3 border-top-0">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm justify-content-center mb-0">
+                        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link text-dark" asp-action="Index" asp-route-status="@selectedStatus" asp-route-page="@(ViewBag.CurrentPage - 1)">
+                                <i class="bi bi-chevron-left"></i> Önceki
+                            </a>
+                        </li>
+                        
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                                <a class="page-link @(ViewBag.CurrentPage == i ? "bg-dark border-dark text-white" : "text-dark")" asp-action="Index" asp-route-status="@selectedStatus" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+                        
+                        <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                            <a class="page-link text-dark" asp-action="Index" asp-route-status="@selectedStatus" asp-route-page="@(ViewBag.CurrentPage + 1)">
+                                Sonraki <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>
+

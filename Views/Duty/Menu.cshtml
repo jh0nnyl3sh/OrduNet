@@ -1,0 +1,216 @@
+﻿@model List<OrduNet.Web.Models.Entities.CafeteriaMenu>
+@{
+    ViewData["Title"] = "Ayl�k Yemek Listesi";
+    int currentYear = ViewBag.SelectedYear ?? DateTime.Today.Year;
+    int currentMonth = ViewBag.SelectedMonth ?? DateTime.Today.Month;
+    string monthName = ViewBag.MonthName as string ?? DateTime.Today.ToString("MMMM yyyy");
+
+    var prevMonthDate = new DateTime(currentYear, currentMonth, 1).AddMonths(-1);
+    var nextMonthDate = new DateTime(currentYear, currentMonth, 1).AddMonths(1);
+    var todayMenu = Model.FirstOrDefault(m => m.Date.Date == DateTime.Today);
+}
+
+<div class="container py-3 py-lg-4">
+    <!-- üst Bağlık ve Ay Seçici Bar -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-2 border-bottom">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Ana Sayfa</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Yemek Listesi</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+                <i class="bi bi-cup-hot-fill text-warning"></i> Adliye Personeli Yemek Listesi
+            </h3>
+            <small class="text-muted">T.C. Ordu Adalet Sarayı tabildot �ile yemeği ayl�k menü Çizelgesi (Servis: 12:00 - 13:30)</small>
+        </div>
+
+        <!-- Ay Değiştirici & Yazdır Butonlar� -->
+        <div class="d-flex align-items-center gap-2 no-print">
+            <div class="btn-group btn-group-sm shadow-sm" role="group">
+                <a asp-action="Menu" asp-route-year="@prevMonthDate.Year" asp-route-month="@prevMonthDate.Month" class="btn btn-outline-secondary" title="Önceki Ay">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <button type="button" class="btn btn-outline-secondary fw-bold text-dark px-3" disabled style="background-color: #f8fafb; opacity: 1;">
+                    <i class="bi bi-calendar3 me-1 text-primary"></i> @monthName
+                </button>
+                <a asp-action="Menu" asp-route-year="@nextMonthDate.Year" asp-route-month="@nextMonthDate.Month" class="btn btn-outline-secondary" title="Sonraki Ay">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+
+            <button type="button" onclick="window.print();" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 shadow-sm" title="Ayl�k Listeyi Yazdır">
+                <i class="bi bi-printer"></i>
+                <span class="d-none d-sm-inline">Yazdır</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bugünün Menüs� Vurgulama Banner'� (Eğer bu ayda bugün varsa) -->
+    @if (todayMenu != null)
+    {
+        <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden border-start border-4 border-warning no-print" style="background: linear-gradient(135deg, #ffffff 0%, #f7fafb 100%);">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 pb-2 border-bottom">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-warning text-dark fw-bold px-3 py-1 fs-6">
+                            <i class="bi bi-star-fill me-1"></i> BUGÜNÜN MENÜS�
+                        </span>
+                        <span class="text-dark fw-semibold">@todayMenu.Date.ToString("dd MMMM yyyy, dddd")</span>
+                    </div>
+                    @if (todayMenu.Calories.HasValue)
+                    {
+                        <span class="badge bg-light text-dark border px-3 py-1">
+                            <i class="bi bi-fire text-danger me-1"></i> @todayMenu.Calories kcal
+                        </span>
+                    }
+                </div>
+
+                <div class="row g-3 text-center text-sm-start">
+                    <div class="col-6 col-md-3">
+                        <span class="text-muted small text-uppercase fw-semibold d-block">1. Çorba</span>
+                        <span class="fw-bold text-dark fs-6">@todayMenu.Soup</span>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <span class="text-muted small text-uppercase fw-semibold d-block">2. Ana Yemek</span>
+                        <span class="fw-bold text-primary fs-6">@todayMenu.MainDish</span>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <span class="text-muted small text-uppercase fw-semibold d-block">3. Yardımcı Yemek</span>
+                        <span class="fw-semibold text-dark">@todayMenu.SideDish</span>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <span class="text-muted small text-uppercase fw-semibold d-block">4. Tatlı / Meyve</span>
+                        <span class="fw-semibold text-dark">@todayMenu.DessertOrSalad</span>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(todayMenu.FullMenuText))
+                {
+                    <div class="mt-3 pt-2 border-top">
+                        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#todayFullBannerCollapse" style="font-size: 0.78rem;">
+                            <i class="bi bi-card-checklist me-1 text-primary"></i> Bugünün Tüm Büfe ve işecek Seçenekleri (@(todayMenu.FullMenuText.Split('\n').Length) çeşit)
+                        </button>
+                        <div class="collapse mt-2" id="todayFullBannerCollapse">
+                            <div class="p-3 bg-white border rounded small text-dark d-flex flex-wrap gap-2">
+                                @foreach (var item in todayMenu.FullMenuText.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    <span class="badge bg-light text-dark border py-1.5 px-2 fw-normal" style="font-size: 0.78rem;">
+                                        <i class="bi bi-check2 text-success me-1"></i>@item
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Ayl�k Liste Kartları -->
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm p-5 text-center text-muted rounded-3">
+            <i class="bi bi-cup-straw fs-1 text-secondary mb-2"></i>
+            <h5 class="fw-bold text-dark">@monthName Dönemine Ait Menü Bulunamadı</h5>
+            <p class="small text-muted mb-3">Bu ay için henüz yemek listesi sisteme yüklenmemi� olabilir.</p>
+            <div>
+                <a asp-action="Menu" asp-route-year="@DateTime.Today.Year" asp-route-month="@DateTime.Today.Month" class="btn btn-outline-primary btn-sm px-3">
+                    <i class="bi bi-calendar-check me-1"></i> Bu Ay�n Menüsöne Git
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var m in Model)
+            {
+                var isToday = m.Date.Date == DateTime.Today;
+                var isWeekend = m.Date.DayOfWeek == DayOfWeek.Saturday || m.Date.DayOfWeek == DayOfWeek.Sunday;
+
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden @(isToday ? "border border-2 border-warning" : "")">
+                        <!-- Gün Bağlı�� -->
+                        <div class="card-header py-2 px-3 text-white d-flex justify-content-between align-items-center" 
+                             style="background-color: @(isToday ? "var(--primary-color)" : (isWeekend ? "#6c757d" : "#244a53"));">
+                            <span class="fw-bold small">
+                                @if (isToday)
+                                {
+                                    <i class="bi bi-star-fill text-warning me-1"></i>
+                                }
+                                @m.DayName
+                            </span>
+                            <span class="badge @(isToday ? "bg-warning text-dark" : "bg-light text-dark") small" style="font-size: 0.72rem;">
+                                @m.Date.ToString("dd.MM.yyyy")
+                            </span>
+                        </div>
+
+                        <!-- Menü içeriği -->
+                        <div class="card-body p-3 d-flex flex-column justify-content-between">
+                            <ul class="list-unstyled mb-0 d-flex flex-column gap-2 small">
+                                <li class="d-flex align-items-start gap-2 border-bottom pb-1">
+                                    <i class="bi bi-check2 text-warning flex-shrink-0 mt-1"></i>
+                                    <div>
+                                        <span class="text-muted d-block" style="font-size: 0.7rem;">Çorba</span>
+                                        <span class="fw-semibold text-dark">@m.Soup</span>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-start gap-2 border-bottom pb-1">
+                                    <i class="bi bi-check2 text-primary flex-shrink-0 mt-1"></i>
+                                    <div>
+                                        <span class="text-muted d-block" style="font-size: 0.7rem;">Ana Yemek</span>
+                                        <span class="fw-bold text-primary">@m.MainDish</span>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-start gap-2 border-bottom pb-1">
+                                    <i class="bi bi-check2 text-secondary flex-shrink-0 mt-1"></i>
+                                    <div>
+                                        <span class="text-muted d-block" style="font-size: 0.7rem;">Yardımcı</span>
+                                        <span class="text-dark">@m.SideDish</span>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-start gap-2">
+                                    <i class="bi bi-check2 text-secondary flex-shrink-0 mt-1"></i>
+                                    <div>
+                                        <span class="text-muted d-block" style="font-size: 0.7rem;">Tatlı / Salata / Meyve</span>
+                                        <span class="text-dark">@m.DessertOrSalad</span>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            @if (!string.IsNullOrWhiteSpace(m.FullMenuText))
+                            {
+                                <div class="mt-2 pt-2 border-top">
+                                    <button class="btn btn-light btn-sm w-100 text-secondary py-1 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#menuDetail-@m.Id" style="font-size: 0.72rem;">
+                                        <span><i class="bi bi-list-check me-1 text-primary"></i> Tüm çeşitler</span>
+                                        <span class="badge bg-secondary">@(m.FullMenuText.Split('\n').Length) çeşit</span>
+                                    </button>
+                                    <div class="collapse mt-2" id="menuDetail-@m.Id">
+                                        <div class="p-2 bg-light rounded text-dark" style="font-size: 0.72rem; max-height: 160px; overflow-y: auto;">
+                                            @foreach (var item in m.FullMenuText.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                                            {
+                                                <div class="d-flex align-items-center gap-1 py-0.5 border-bottom border-light">
+                                                    <i class="bi bi-dot text-primary fs-6"></i>
+                                                    <span>@item</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        @if (m.Calories.HasValue)
+                        {
+                            <div class="card-footer bg-light py-1 px-3 text-end text-muted small" style="font-size: 0.72rem;">
+                                <i class="bi bi-fire text-danger"></i> ~@m.Calories kcal
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

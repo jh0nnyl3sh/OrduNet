@@ -1,0 +1,105 @@
+﻿@model OrduNet.Web.Models.Entities.Personnel
+@{
+    ViewData["Title"] = "Personel Düzenle";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-primary" style="color: var(--primary-color) !important;">
+                        <i class="bi bi-pencil-square text-warning me-2"></i> Personel Düzenle: @Model.FullName
+                    </h5>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Listeye Dün</a>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="EditPersonnel" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label fw-bold">Ad *</label>
+                                <input asp-for="FirstName" class="form-control" required />
+                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label fw-bold">Soyad *</label>
+                                <input asp-for="LastName" class="form-control" required />
+                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Title" class="form-label fw-bold">Unvan *</label>
+                                <input asp-for="Title" class="form-control" required />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="UnitId" class="form-label fw-bold">Bağlı Olduğu Birim / Mahkeme *</label>
+                                <select asp-for="UnitId" class="form-select" asp-items="ViewBag.Units" required></select>
+                                <span asp-validation-for="UnitId" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="InternalNumber" class="form-label fw-bold">Dahili Numara *</label>
+                                <input asp-for="InternalNumber" class="form-control" required />
+                                <span asp-validation-for="InternalNumber" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="InternalNumber2" class="form-label">İkinci Dahili (Varsa)</label>
+                                <input asp-for="InternalNumber2" class="form-control" />
+                                <span asp-validation-for="InternalNumber2" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="RoomNumber" class="form-label">Oda Numarası</label>
+                                <input asp-for="RoomNumber" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Floor" class="form-label">Kat</label>
+                                <input asp-for="Floor" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label">Kurumsal E-Posta</label>
+                                <input asp-for="Email" type="email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="DisplayOrder" class="form-label">Sıralama Öncelişi</label>
+                                <input asp-for="DisplayOrder" type="number" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Açıklama / Görev Detayı</label>
+                            <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-check form-switch mb-4">
+                            <input asp-for="IsActive" class="form-check-input" type="checkbox" id="isActiveSwitch">
+                            <label class="form-check-label fw-semibold" for="isActiveSwitch">Bu kayıt rehberde aktif olarak görunsün</label>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                            <button type="submit" class="btn btn-primary fw-bold" style="background-color: var(--primary-color); border-color: var(--primary-color);">
+                                <i class="bi bi-save me-1"></i> Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

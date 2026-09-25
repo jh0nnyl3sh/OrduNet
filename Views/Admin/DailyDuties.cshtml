@@ -1,0 +1,111 @@
+﻿@model List<OrduNet.Web.Models.Entities.DailyDuty>
+@{
+    ViewData["Title"] = "Nöbet�i Birimler";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
+                <i class="bi bi-calendar-event text-warning me-2"></i> Nöbet�i Birimler Yönetimi
+            </h2>
+            <div class="text-muted small">Günlük nöbet�i mahkemeleri, savcılar� ve idari birimleri yönetin</div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panoya Dün
+            </a>
+            <button type="button" class="btn btn-warning btn-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#newDailyDutyModal">
+                <i class="bi bi-plus-circle me-1"></i> Yeni Nöbet�i Ekle
+            </button>
+        </div>
+    </div>
+
+
+
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 120px;">Tarih</th>
+                        <th>Nöbet Türü</th>
+                        <th>Görevli Birim/Kişi</th>
+                        <th>İletişim</th>
+                        <th>Yer</th>
+                        <th class="text-end" style="width: 120px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    <i class="bi bi-calendar3 me-1"></i> @d.DutyDate.ToString("dd.MM.yyyy")
+                                </span>
+                            </td>
+                            <td class="fw-bold text-dark">@d.DutyType</td>
+                            <td>@d.DutyOfficerOrUnit</td>
+                            <td class="text-muted"><i class="bi bi-telephone me-1"></i> @(d.ContactInfo ?? "-")</td>
+                            <td class="text-muted"><i class="bi bi-geo-alt me-1"></i> @(d.Location ?? "-")</td>
+                            <td class="text-end">
+                                <a asp-action="EditDailyDuty" asp-route-id="@d.Id" class="btn btn-outline-primary btn-sm" title="Düzenle">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-action="DeleteDailyDuty" asp-route-id="@d.Id" method="post" class="d-inline" onsubmit="return confirm('Bu nöbet kaydı silinecek. Onaylıyor musunuz?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Sil">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- YENİ NÖBETÇİ� MODAL -->
+<div class="modal fade" id="newDailyDutyModal" tabindex="-1" aria-labelledby="newDailyDutyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header text-white" style="background-color: var(--primary-color);">
+                <h5 class="modal-title" id="newDailyDutyModalLabel"><i class="bi bi-plus-circle text-warning me-2"></i> Yeni Nöbet�i Ekle</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <form asp-action="CreateDailyDuty" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nöbet Tarihi *</label>
+                        <input type="date" name="DutyDate" class="form-control" required value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nöbet Türü *</label>
+                        <input type="text" name="DutyType" class="form-control" required placeholder="Örn: Nöbet�i A��r Ceza Mahkemesi" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Görevli Birim / Kişi *</label>
+                        <input type="text" name="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. A��r Ceza Mahkemesi" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">İletişim Bilgişi</label>
+                        <input type="text" name="ContactInfo" class="form-control" placeholder="Örn: Dahili 1112" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Yer / Konum</label>
+                        <input type="text" name="Location" class="form-control" placeholder="Örn: Zemin Kat" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-primary btn-sm fw-bold">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
