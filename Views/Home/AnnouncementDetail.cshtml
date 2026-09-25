@@ -26,7 +26,7 @@
         <!-- SOL ANA SÜTUN: DUYURU METNİ (TEK SAYFA, KOMPAKT) -->
         <div class="col-lg-8">
             <article class="announcement-detail-card card border-0 shadow-sm rounded-3 overflow-hidden">
-                <!-- üst Bağlık & Kategöri Alanı -->
+                <!-- üst Başlık & Kategori Alanı -->
                 <div class="card-header bg-white border-bottom p-3">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
                         <div class="d-flex align-items-center gap-2">
@@ -41,15 +41,15 @@
                             }
                         </div>
 
-                        <!-- Hızlı İşlemler: Yazdır, Paylağ, Düzenle -->
+                        <!-- Hızlı İşlemler: Yazdır, Paylaş, Düzenle -->
                         <div class="d-flex align-items-center gap-2 no-print">
                             <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 d-inline-flex align-items-center gap-1" onclick="window.print();" title="Sayfayı Yazdır">
                                 <i class="bi bi-printer"></i>
                                 <span class="d-none d-sm-inline small">Yazdır</span>
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 d-inline-flex align-items-center gap-1" id="btnShareLink" onclick="copyAnnouncementUrl();" title="Bağlantçyç Kopyala">
+                            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 d-inline-flex align-items-center gap-1" id="btnShareLink" onclick="copyAnnouncementUrl();" title="Bağlantıyı Kopyala">
                                 <i class="bi bi-share"></i>
-                                <span class="d-none d-sm-inline small">Paylağ</span>
+                                <span class="d-none d-sm-inline small">Paylaş</span>
                             </button>
                             @if (User.Identity?.IsAuthenticated == true && User.HasModulePermission(SystemModules.Announcements))
                             {
@@ -61,12 +61,12 @@
                         </div>
                     </div>
 
-                    <!-- Ana Bağlık -->
+                    <!-- Ana Başlık -->
                     <h1 class="announcement-detail-title h4 fw-bold text-dark mb-2" style="line-height: 1.35;">
                         @Model.Title
                     </h1>
 
-                    <!-- Meta Bilgi çubuğu -->
+                    <!-- Meta Bilgi Çubuğu -->
                     <div class="announcement-meta-bar d-flex flex-wrap align-items-center gap-3 text-muted small pt-2 border-top">
                         <span>
                             <i class="bi bi-calendar3 text-primary me-1"></i>
@@ -110,7 +110,7 @@
                 <div class="card-footer bg-white border-top p-2 px-3 d-flex justify-content-between align-items-center no-print">
                     <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2 px-3">
                         <i class="bi bi-arrow-left"></i>
-                        <span>Ana Sayfaya Dün</span>
+                        <span>Ana Sayfaya Dön</span>
                     </a>
 
                     <span class="text-muted small">
