@@ -11,7 +11,7 @@
                     <h5 class="fw-bold mb-0 text-primary" style="color: var(--primary-color) !important;">
                         <i class="bi bi-person-plus-fill text-warning me-2"></i> Yeni Personel & Dahili Ekle
                     </h5>
-                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Listeye Dün</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Listeye Dön</a>
                 </div>
                 <div class="card-body p-4">
                     <form asp-action="CreatePersonnel" method="post">
@@ -34,7 +34,7 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label asp-for="Title" class="form-label fw-bold">Unvan *</label>
-                                <input asp-for="Title" class="form-control" required placeholder="Örn: Mahkeme Bağkanç / Zabıt Kâtibi" />
+                                <input asp-for="Title" class="form-control" required placeholder="Örn: Mahkeme Başkanı / Zabıt Kâtibi" />
                                 <span asp-validation-for="Title" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
@@ -77,7 +77,7 @@
                                 <span asp-validation-for="Email" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="DisplayOrder" class="form-label">Sıralama Öncelişi</label>
+                                <label asp-for="DisplayOrder" class="form-label">Sıralama Önceliği</label>
                                 <input asp-for="DisplayOrder" type="number" class="form-control" value="10" />
                             </div>
                         </div>
