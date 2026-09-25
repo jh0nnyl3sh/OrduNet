@@ -19,10 +19,10 @@
                 <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                     <div>
                         <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-pencil-square text-primary me-2"></i> Duyuru Düzenle: @Model.Title</h4>
-                        <small class="text-muted">Duyuru bağlçççnç, Özetini, kategörişini veya yayın durumunu güncelleyin.</small>
+                        <small class="text-muted">Duyuru başlığını, Özetini, kategorisni veya yayın durumunu güncelleyin.</small>
                     </div>
                     <a asp-action="Announcements" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-arrow-left me-1"></i> Listeye Dün
+                        <i class="bi bi-arrow-left me-1"></i> Listeye Dön
                     </a>
                 </div>
 
@@ -35,18 +35,18 @@
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-3"></div>
 
                         <div class="mb-3">
-                            <label asp-for="Title" class="form-label small fw-semibold text-dark">Duyuru Bağlıçç <span class="text-danger">*</span></label>
+                            <label asp-for="Title" class="form-label small fw-semibold text-dark">Duyuru Başlığı <span class="text-danger">*</span></label>
                             <input asp-for="Title" class="form-control" required />
                             <span asp-validation-for="Title" class="text-danger small"></span>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label asp-for="Category" class="form-label small fw-semibold text-dark">Kategöri <span class="text-danger">*</span></label>
+                                <label asp-for="Category" class="form-label small fw-semibold text-dark">Kategori <span class="text-danger">*</span></label>
                                 <select asp-for="Category" class="form-select">
                                     <option value="DUYURU">DUYURU (Genel)</option>
                                     <option value="HABER">HABER (Kurumsal)</option>
-                                    <option value="BçLçççM">BçLçççM & UYAP</option>
+                                    <option value="BİLİŞİM">BİLİŞİM & UYAP</option>
                                     <option value="İDARİ İŞLER">İDARİ İŞLER</option>
                                     <option value="KOMİSYON">KOMİSYON BAŞKANLIĞI</option>
                                     <option value="SOSYAL">SOSYAL & SAĞLIK</option>
@@ -60,13 +60,13 @@
                                     <option value="badge-danger">Kırmızı (Acil / Önemli)</option>
                                     <option value="badge-primary">Lacivert / Mavi (Kurumsal / Bilişim)</option>
                                     <option value="badge-warning">Sarı / Türuncu (İdari / Uyarı)</option>
-                                    <option value="badge-success">Yeşil (Haber / Anlağma)</option>
+                                    <option value="badge-success">Yeşil (Haber / Anlaşma)</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Summary" class="form-label small fw-semibold text-dark">Özet Metin (Ana Sayfada Görönecek Kısım) <span class="text-danger">*</span></label>
+                            <label asp-for="Summary" class="form-label small fw-semibold text-dark">Özet Metin (Ana Sayfada Görünecek Kısım) <span class="text-danger">*</span></label>
                             <textarea asp-for="Summary" class="form-control" rows="2" required></textarea>
                             <span asp-validation-for="Summary" class="text-danger small"></span>
                         </div>
@@ -89,7 +89,7 @@
                                     <label class="form-check-label fw-semibold small text-dark" for="announcementIsActive">
                                         Yayında (Aktif)
                                     </label>
-                                    <div class="form-text small">Kapatılçrsa ana sayfada gizlenir.</div>
+                                    <div class="form-text small">Kapatılırsa ana sayfada gizlenir.</div>
                                 </div>
                             </div>
                         </div>
