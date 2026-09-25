@@ -1,6 +1,6 @@
 ﻿@model OrduNet.Web.Models.Entities.EmergencyAlert
 @{
-    ViewData["Title"] = "Acil Durum & Duyuru şeridi";
+    ViewData["Title"] = "Acil Durum & Duyuru Şeridi";
     Layout = "_Layout";
 }
 
@@ -10,7 +10,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-2 small">
                     <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index" class="text-decoration-none text-muted">Yönetim Paneli</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Acil Durum Bandç</li>
+                    <li class="breadcrumb-item active" aria-current="page">Acil Durum Bandı</li>
                 </ol>
             </nav>
 
@@ -21,23 +21,23 @@
                         <h4 class="fw-bold mb-0 text-dark">
                             <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i> Acil Durum / Kırmızı Bant Yönetimi
                         </h4>
-                        <small class="text-muted">Portalın en üstçnde personele yönelik acil anons veya kritik uyarı bandünç yönetin.</small>
+                        <small class="text-muted">Portalın en üstünde personele yönelik acil anons veya kritik uyarı bandını yönetin.</small>
                     </div>
                     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-arrow-left me-1"></i> Panele Dün
+                        <i class="bi bi-arrow-left me-1"></i> Panele Dön
                     </a>
                 </div>
 
                 <div class="card-body p-4">
-                    <!-- Canlç önizleme Kutusu -->
+                    <!-- Canlı önizleme Kutusu -->
                     <div class="mb-4">
                         <label class="form-label small fw-semibold text-dark mb-1">
-                            <i class="bi bi-eye me-1"></i> Canlç önizleme (Portal üst şeridi)
+                            <i class="bi bi-eye me-1"></i> Canlı önizleme (Portal üst şeridi)
                         </label>
                         <div id="previewAlert" class="alert @(Model.AlertLevel == "warning" ? "alert-warning" : Model.AlertLevel == "info" ? "alert-info" : "alert-danger") border-0 shadow-sm d-flex align-items-center gap-2 mb-0 py-2 px-3 rounded-2">
                             <i id="previewIcon" class="bi @(Model.AlertLevel == "warning" ? "bi-exclamation-circle-fill" : Model.AlertLevel == "info" ? "bi-info-circle-fill" : "bi-exclamation-triangle-fill") fs-5"></i>
                             <div class="flex-grow-1">
-                                <strong id="previewTitle">@(string.IsNullOrEmpty(Model.Title) ? "ACçL DUYURU BAŞLIĞI" : Model.Title):</strong>
+                                <strong id="previewTitle">@(string.IsNullOrEmpty(Model.Title) ? "ACİL DUYURU BAŞLIĞI" : Model.Title):</strong>
                                 <span id="previewMessage">@(string.IsNullOrEmpty(Model.Message) ? "Buraya acil durum mesajı gelecektir." : Model.Message)</span>
                             </div>
                             <span id="previewStatusBadge" class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
@@ -56,10 +56,10 @@
                                 <input asp-for="IsActive" class="form-check-input fs-4 m-0" type="checkbox" id="alertIsActive">
                                 <div>
                                     <label class="form-check-label fw-bold text-dark fs-6 cursor-pointer" for="alertIsActive">
-                                        Acil Durum Bandünç Sitede Göster (Aktif Et)
+                                        Acil Durum Bandını Sitede Göster (Aktif Et)
                                     </label>
                                     <div class="small text-muted">
-                                        işaretli olduğunda portalın tüm sayfalarının en tepesinde göze carpan kırmızı / renkli şerit yayınlanır.
+                                        İşaretli olduğunda portalın tüm sayfalarının en tepesinde göze çarpan kırmızı / renkli şerit yayınlanır.
                                     </div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
 
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label asp-for="Title" class="form-label small fw-semibold text-dark">Duyuru / Alarm Bağlıçç <span class="text-danger">*</span></label>
+                                <label asp-for="Title" class="form-label small fw-semibold text-dark">Duyuru / Alarm Başlığı <span class="text-danger">*</span></label>
                                 <input asp-for="Title" id="inputTitle" class="form-control" placeholder="Örnek: KRİTİK SİSTEM BAKIMI veya HAVA MUHALEFETİ" required />
                                 <span asp-validation-for="Title" class="text-danger small"></span>
                             </div>
@@ -76,14 +76,14 @@
                                 <label asp-for="AlertLevel" class="form-label small fw-semibold text-dark">Uyarı Seviyesi & Renk</label>
                                 <select asp-for="AlertLevel" id="selectLevel" class="form-select">
                                     <option value="danger">Kırmızı (Kritik / Acil Durum)</option>
-                                    <option value="warning">Sarı / Türuncu (Önemli Uyarı)</option>
+                                    <option value="warning">Sarı / Turuncu (Önemli Uyarı)</option>
                                     <option value="info">Mavi (Bilgilendirme)</option>
                                 </select>
                             </div>
 
                             <div class="col-12">
-                                <label asp-for="Message" class="form-label small fw-semibold text-dark">Duyuru Açıklamasç / Detay Metni <span class="text-danger">*</span></label>
-                                <textarea asp-for="Message" id="inputMessage" class="form-control" rows="3" placeholder="Personele duyurulacak acil durum veya kesinti ağçklamasçnç yazınçz..." required></textarea>
+                                <label asp-for="Message" class="form-label small fw-semibold text-dark">Duyuru Açıklaması / Detay Metni <span class="text-danger">*</span></label>
+                                <textarea asp-for="Message" id="inputMessage" class="form-control" rows="3" placeholder="Personele duyurulacak acil durum veya kesinti açıklamasını yazınız..." required></textarea>
                                 <span asp-validation-for="Message" class="text-danger small"></span>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
         const previewBadge = document.getElementById("previewStatusBadge");
 
         function updatePreview() {
-            previewTitle.textContent = (titleInput.value.trim() || "ACçL DUYURU BAŞLIĞI") + ":";
+            previewTitle.textContent = (titleInput.value.trim() || "ACİL DUYURU BAŞLIĞI") + ":";
             previewMsg.textContent = (msgInput.value.trim() || "Buraya acil durum mesajı gelecektir.");
 
             previewAlert.className = "alert border-0 shadow-sm d-flex align-items-center gap-2 mb-0 py-2 px-3 rounded-2 ";

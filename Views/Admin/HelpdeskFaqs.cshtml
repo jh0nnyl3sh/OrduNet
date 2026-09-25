@@ -14,7 +14,7 @@
 
         <div class="d-flex gap-2">
             <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Panoya Dün
+                <i class="bi bi-arrow-left me-1"></i> Panoya Dön
             </a>
             <a asp-action="CreateFaq" class="btn btn-warning btn-sm fw-bold text-dark">
                 <i class="bi bi-plus-circle me-1"></i> Yeni Soru Ekle
@@ -59,7 +59,7 @@
                                         <a asp-action="EditFaq" asp-route-id="@faq.Id" class="btn btn-outline-primary">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form asp-action="DeleteFaq" asp-route-id="@faq.Id" method="post" style="display:inline;" onsubmit="return confirm('Bu kaydı silmek istediğinize emin mişiniz?');">
+                                        <form asp-action="DeleteFaq" asp-route-id="@faq.Id" method="post" style="display:inline;" onsubmit="return confirm('Bu kaydı silmek istediğinize emin misiniz?');">
                                             <button type="submit" class="btn btn-outline-danger">
                                                 <i class="bi bi-trash"></i>
                                             </button>

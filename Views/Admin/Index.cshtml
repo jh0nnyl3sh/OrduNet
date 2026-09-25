@@ -175,7 +175,7 @@
                         </div>
                         <h5 class="fw-bold text-dark mb-0">Nöbetçi Birimler</h5>
                     </div>
-                    <p class="text-muted small">Günlük nöbetçi mahkemeleri, savcıları ve noterleri ayarlayın.</p>
+                    <p class="text-muted small">Günlük nöbetçi mahkemeleri, savcıları ve birimleri ayarlayın.</p>
                     <div class="mt-auto">
                         <a asp-action="DailyDuties" class="btn btn-outline-warning btn-sm w-100 fw-semibold text-dark">Nöbetçileri Yönet</a>
                     </div>
@@ -198,7 +198,7 @@
                         <a asp-controller="Ticket" asp-action="SupportTechnicians" class="btn btn-outline-secondary btn-sm px-2" title="Teknik Ekip & İzin Yönetimi">
                             <i class="bi bi-people-fill"></i>
                         </a>
-                        <a asp-controller="Ticket" asp-action="TicketCategories" class="btn btn-outline-secondary btn-sm px-2" title="Arıza Kategörileri">
+                        <a asp-controller="Ticket" asp-action="TicketCategories" class="btn btn-outline-secondary btn-sm px-2" title="Arıza Kategorileri">
                             <i class="bi bi-tags-fill"></i>
                         </a>
                     </div>
@@ -311,7 +311,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Talep Eden</th>
-                                <th>Kategöri</th>
+                                <th>Kategori</th>
                                 <th>Durum</th>
                                 <th>Tarih</th>
                             </tr>
@@ -399,7 +399,7 @@
     <script>
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/ticketHub")
-            .configureLogging(signalR.LogLevel.Informatıon)
+            .configureLogging(signalR.LogLevel.Information)
             .build();
 
         connection.on("ReceiveTicketNotification", (ticketId, requesterName, category) => {
