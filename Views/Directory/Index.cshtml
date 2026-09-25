@@ -6,14 +6,14 @@
     bool canManageDirectory = User.Identity?.IsAuthenticated == true && User.HasModulePermission(SystemModules.Directory);
 }
 
-<!-- 1. HERO ARAMA BçLçMç -->
+<!-- 1. HERO ARAMA BÖLÜMÜ -->
 <div class="directory-hero">
     <div class="container text-center">
         <div class="d-inline-flex align-items-center gap-2 mb-2 px-3 py-1 bg-white bg-opacity-10 rounded-pill text-warning small fw-bold">
-            <i class="bi bi-shield-check"></i> Ordu Adalet Sarayı Dahili İletişim Açç
+            <i class="bi bi-shield-check"></i> Ordu Adalet Sarayı Dahili İletişim Ağı
         </div>
-        <h2 class="fw-bolder mb-2 text-white">Kurumişi Telefon Rehberi</h2>
-        <p class="text-white-50 mb-4 small">Ad, soyad, unvan, mahkeme/kalem adı, oda no veya dahili numara ile ançnda arama yapabilirsiniz.</p>
+        <h2 class="fw-bolder mb-2 text-white">Kurumiçi Telefon Rehberi</h2>
+        <p class="text-white-50 mb-4 small">Ad, soyad, unvan, mahkeme/kalem adı, oda no veya dahili numara ile anında arama yapabilirsiniz.</p>
 
         <!-- CANLI ARAMA KUTUSU -->
         <div class="search-container">
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <!-- KATEGORİ FİLTRE DççMELERç -->
+            <!-- KATEGORİ FİLTRE DÜĞMELERİ -->
             <div class="category-pills">
                 <button type="button" class="pill-btn category-pill-btn active" data-category="Tümç">
                     <i class="bi bi-grid-fill me-1"></i> Tümç (@Model.TotalPersonnelCount)
@@ -181,8 +181,8 @@
                         
                         @for (int i = 1; i <= Model.TotalPages; i++)
                         {
-                            // çok fazla sayfa varsa sayfalama görunümünü kısaltmak için (opsiyönel basit mantık eklenebilir ama çu an tüm sayfaları basçyoruz)
-                            // Sayfa sayişi çok olursa tağabilir ancak genelde 1-10 arasç idare eder.
+                            // çok fazla sayfa varsa sayfalama görunümünü kısaltmak için (opsiyonel basit mantık eklenebilir ama şu an tüm sayfaları basıyoruz)
+                            // Sayfa sayısı çok olursa taşabilir ancak genelde 1-10 arası idare eder.
                             <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
                                 <a class="page-link @(Model.CurrentPage == i ? "bg-dark border-dark text-white" : "text-dark")" 
                                    asp-action="Index" 
@@ -210,8 +210,8 @@
         <!-- SONUÇ BULUNAMADI UYARISI -->
         <div id="noResultsDiv" class="text-center py-5" style="display: none;">
             <div class="display-6 text-muted mb-3"><i class="bi bi-search"></i></div>
-            <h5 class="fw-bold text-secondary">Aramançza Uygün Kayıt Bulunamadı</h5>
-            <p class="text-muted small">Lütfen arama teriminizi kontrol ediniz veya filtreyi "Tümç" olarak değiçtiriniz.</p>
+            <h5 class="fw-bold text-secondary">Aramanıza Uygun Kayıt Bulunamadı</h5>
+            <p class="text-muted small">Lütfen arama teriminizi kontrol ediniz veya filtreyi "Tümü" olarak değiştiriniz.</p>
         </div>
     </div>
 </div>
