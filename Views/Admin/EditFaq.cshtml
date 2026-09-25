@@ -21,19 +21,19 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label asp-for="Answer" class="form-label fw-bold">çözüm / Cevap</label>
+                            <label asp-for="Answer" class="form-label fw-bold">Çözüm / Cevap</label>
                             <textarea asp-for="Answer" class="form-control" rows="3" required></textarea>
                             <span asp-validation-for="Answer" class="text-danger small"></span>
                         </div>
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label asp-for="IconClass" class="form-label fw-bold">Bootstrap ikon Sınıfç</label>
+                                <label asp-for="IconClass" class="form-label fw-bold">Bootstrap ikon Sınıfı</label>
                                 <input asp-for="IconClass" class="form-control" />
                                 <div class="form-text small">Mevcut ikon: <i class="bi @Model.IconClass ms-1"></i></div>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="DisplayOrder" class="form-label fw-bold">Göruntülenme Sırasç</label>
+                                <label asp-for="DisplayOrder" class="form-label fw-bold">Görüntülenme Sırası</label>
                                 <input asp-for="DisplayOrder" type="number" class="form-control" />
                             </div>
                         </div>

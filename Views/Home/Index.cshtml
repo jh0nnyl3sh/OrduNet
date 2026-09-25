@@ -4,7 +4,7 @@
 }
 
 <div class="container py-2 py-lg-3">
-    <!-- 1. HIZLI ERİŞİM KARTLARI (Bakırköy Adliyesi Tarzı) -->
+    <!-- 1. HIZLI ERİŞİM KARTLARI -->
     <section class="quick-access-section mb-3">
         <div class="row g-2 g-xl-3">
             <!-- Telefon Rehberi (öne çıkan Kart) -->
@@ -15,7 +15,7 @@
                     </div>
                     <div class="quick-card-info">
                         <h3>Telefon Rehberi</h3>
-                        <p>Adliye işi tüm hâkim, savcı, kalem ve personel dahili numaraları</p>
+                        <p>Adliye içi tüm hâkim, savcı, kalem ve personel dahili numaraları</p>
                     </div>
                 </a>
             </div>
@@ -36,7 +36,7 @@
                 </a>
             </div>
 
-            <!-- Ceza & Hukuk Tevzi -->
+            <!-- İdari Yazılımlar Kafeterya Sipariş Sistemi -->
             <div class="col-xl-4 col-md-6">
                 <a href="https://idariyazilimlar.adalet.gov.tr" target="_blank" rel="noopener" class="quick-card">
                     <div class="quick-card-icon">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="quick-card-info">
                         <h3>Yemek Listesi</h3>
-                        <p>Haftalık ve günlük adliye personeli tabildot yemek menüsç</p>
+                        <p>Haftalık ve günlük adliye personeli tabildot yemek menüsü</p>
                     </div>
                 </a>
             </div>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="quick-card-info">
                         <h3>Nöbet Çizelgesi</h3>
-                        <p>Günün nöbetçi ağçr ceza, asliye ceza, sulh ceza ve savcılık birimleri</p>
+                        <p>Günün nöbetçi ağır ceza, asliye ceza, sulh ceza ve savcılık birimleri</p>
                     </div>
                 </a>
             </div>
@@ -101,7 +101,7 @@
                 </span> -->
             </div>
 
-            <!-- 2 Kart Yçksekliçinde Scroll Edilebilir Duyuru Alanı -->
+            <!-- 2 Kart Yüksekliğinde Scroll Edilebilir Duyuru Alanı -->
             <div class="announcements-scroll-container">
                 <div class="d-flex flex-column gap-2">
                     @foreach (var item in Model.Announcements)
@@ -122,7 +122,7 @@
                                 <p>@item.Summary</p>
                             </div>
                             <div class="announcement-footer">
-                                <span><i class="bi bi-eye me-1"></i> @item.ViewCount göruntülenme</span>
+                                <span><i class="bi bi-eye me-1"></i> @item.ViewCount görüntülenme</span>
                                 <a asp-controller="Home" asp-action="AnnouncementDetail" asp-route-id="@item.Id" class="text-primary fw-semibold text-decoration-none announcement-detail-link">
                                     Detaylar <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <!-- SAĞ SÜTUN: GÜNÜN YEMEK MENÜSç BİLEŞENİ -->
+        <!-- SAĞ SÜTUN: GÜNÜN YEMEK MENÜSÜ BİLEŞENİ -->
         <div class="col-lg-4 d-flex flex-column"> 
             <div class="section-heading">
                 <h2>Yemek Menüsü</h2>
@@ -219,7 +219,7 @@
                 <div class="card border-0 shadow-sm rounded-3 overflow-hidden food-menu-card">
                     <div class="card-header text-white py-2 d-flex justify-content-between align-items-center" style="background-color: #1b4b57;">
                         <div class="fw-bold fs-6">
-                            <i class="bi bi-cup-hot me-2 text-warning"></i> Günün Menüsç
+                            <i class="bi bi-cup-hot me-2 text-warning"></i> Günün Menüsü
                         </div>
                         <span class="badge bg-light text-dark">@DateTime.Today.ToString("dd.MM.yyyy")</span>
                     </div>

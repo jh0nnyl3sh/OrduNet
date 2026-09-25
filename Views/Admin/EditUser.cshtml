@@ -24,7 +24,7 @@
                         <small class="text-muted">Kullanıcı profilini, Şifresini ve modül erişim izinlerini güncelleyin.</small>
                     </div>
                     <a asp-action="Users" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-arrow-left me-1"></i> Listeye Dün
+                        <i class="bi bi-arrow-left me-1"></i> Listeye Dön
                     </a>
                 </div>
 
@@ -63,7 +63,7 @@
                                 <label asp-for="Title" class="form-label small fw-semibold text-dark">Unvan / Görev</label>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text bg-light"><i class="bi bi-briefcase"></i></span>
-                                    <input asp-for="Title" class="form-control" placeholder="örnek: Yazı İşleri Müdürç, Zabıt Kâtibi" />
+                                    <input asp-for="Title" class="form-control" placeholder="örnek: Yazı İşleri Müdürü, Zabıt Kâtibi" />
                                 </div>
                                 <span asp-validation-for="Title" class="text-danger small"></span>
                             </div>
@@ -78,16 +78,16 @@
                             </div>
                         </div>
 
-                        <!-- Şifre Değiştirme (Opsiyönel) -->
+                        <!-- Şifre Değiştirme (İsteğe Bağlı) -->
                         <h6 class="fw-bold text-dark border-bottom pb-2 mt-4 mb-3">
-                            <i class="bi bi-key me-1 text-primary"></i> Şifre Güncelleme (üsteçe Bağlı)
+                            <i class="bi bi-key me-1 text-primary"></i> Şifre Güncelleme (İsteğe Bağlı)
                         </h6>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label asp-for="NewPassword" class="form-label small fw-semibold text-dark">Yeni Şifre</label>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
-                                    <input asp-for="NewPassword" type="password" class="form-control" placeholder="Değiştirmeyecekşeniz boç bırakın" autocomplete="new-password" />
+                                    <input asp-for="NewPassword" type="password" class="form-control" placeholder="Değiştirmeyecekseniz boş bırakın" autocomplete="new-password" />
                                 </div>
                                 <span asp-validation-for="NewPassword" class="text-danger small"></span>
                             </div>
@@ -141,7 +141,7 @@
                                         <input asp-for="IsSuperAdmin" class="form-check-input" type="checkbox" id="userIsSuperAdmin" />
                                     }
                                     <label class="form-check-label fw-semibold small text-dark" for="userIsSuperAdmin">
-                                        <span class="badge bg-warning text-dark me-1"><i class="bi bi-star-fill"></i> Super Yönetici</span> (Tüm modüllere ve kullanıcı yönetimine tam yetki)
+                                        <span class="badge bg-warning text-dark me-1"><i class="bi bi-star-fill"></i> Süper Yönetici</span> (Tüm modüllere ve kullanıcı yönetimine tam yetki)
                                     </label>
                                 </div>
                             </div>
@@ -150,10 +150,10 @@
                         <!-- Modül izinleri -->
                         <div id="modulePermissionsBlock">
                             <h6 class="fw-bold text-dark border-bottom pb-2 mt-4 mb-3">
-                                <i class="bi bi-grid-3x3-gap me-1 text-primary"></i> Modiler Yetkilendirme
+                                <i class="bi bi-grid-3x3-gap me-1 text-primary"></i> Modüler Yetkilendirme
                             </h6>
                             <p class="small text-muted mb-3">
-                                Bu kullanıcınçn yönetim panelinde hangi modülleri göruntüleyip düzenleyebileceçini seçin:
+                                Bu kullanıcının yönetim panelinde hangi modülleri görüntüleyip düzenleyebileceğini seçin:
                             </p>
 
                             <div class="row g-2">

@@ -14,7 +14,7 @@
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
                 <div class="card-header py-2 text-center" style="background-color: var(--primary-color); color: #fff;">
                     <h5 class="mb-0 fw-bold"><i class="bi bi-tools text-warning me-2"></i>Bilgi İşlem Arıza & Destek Bildirimi</h5>
-                    <p class="mb-0 text-white-50 mt-1 small">Donanım, yazıcç, ağ veya UYAP problemleriniz için teknik servis talebi olüsturabilirsiniz.</p>
+                    <p class="mb-0 text-white-50 mt-1 small">Donanım, yazıcı, ağ veya UYAP problemleriniz için teknik servis talebi oluşturabilirsiniz.</p>
                 </div>
                 
                 <div class="card-body p-3 bg-white">
@@ -31,7 +31,7 @@
                         <h6 class="text-muted fw-bold mb-2 border-bottom pb-1 small">1. İletişim Bilgileri</h6>
                         <div class="row g-2 mb-3">
                             <div class="col-md-4">
-                                <label class="form-label small fw-semibold text-dark mb-1">Adınçz Soyadınçz <span class="text-danger">*</span></label>
+                                <label class="form-label small fw-semibold text-dark mb-1">Adınız Soyadınız <span class="text-danger">*</span></label>
                                 <input type="text" asp-for="RequesterName" class="form-control form-control-sm @bgClass" placeholder="Örn: Ahmet Yılmaz" required readonly="@readOnlyAttr" />
                                 <span asp-validation-for="RequesterName" class="text-danger small"></span>
                             </div>
@@ -52,7 +52,7 @@
                             @if(isAuth)
                             {
                                 <div class="col-12 mt-1">
-                                    <div class="form-text small text-primary"><i class="bi bi-info-circle me-1"></i> İletişim bilgileriniz profilinizden otomatik alınmççtçr. Değiştirmek için <a asp-controller="Account" asp-action="Profile" class="fw-bold">Profilimi Düzenle</a> sayfasına gidebilirsiniz.</div>
+                                    <div class="form-text small text-primary"><i class="bi bi-info-circle me-1"></i> İletişim bilgileriniz profilinizden otomatik alınmıştır. Değiştirmek için <a asp-controller="Account" asp-action="Profile" class="fw-bold">Profilimi Düzenle</a> sayfasına gidebilirsiniz.</div>
                                 </div>
                             }
                         </div>
@@ -60,7 +60,7 @@
                         <h6 class="text-muted fw-bold mb-2 border-bottom pb-1 small">2. Arıza Detayları</h6>
                         <div class="row g-2 mb-3">
                             <div class="col-md-4">
-                                <label class="form-label small fw-semibold text-dark mb-1">Arıza Kategörişi <span class="text-danger">*</span></label>
+                                <label class="form-label small fw-semibold text-dark mb-1">Arıza Kategorisi <span class="text-danger">*</span></label>
                                 <select asp-for="Category" class="form-select form-select-sm" required>
                                     <option value="">Kategöri Seçiniz...</option>
                                     @if (ViewBag.Categories != null)
@@ -75,19 +75,19 @@
                             </div>
                             <div class="col-md-8">
                                 <label class="form-label small fw-semibold text-dark mb-1">Arıza Konusu (Özet) <span class="text-danger">*</span></label>
-                                <input type="text" asp-for="Title" class="form-control form-control-sm" placeholder="Örn: Monitör ağçlmçyor, töner bitti vb." required />
+                                <input type="text" asp-for="Title" class="form-control form-control-sm" placeholder="Örn: Monitör açılmıyor, toner bitti vb." required />
                                 <span asp-validation-for="Title" class="text-danger small"></span>
                             </div>
                             <div class="col-12">
                                 <label class="form-label small fw-semibold text-dark mb-1">Arıza Detayı ve Açıklama <span class="text-danger">*</span></label>
-                                <textarea asp-for="Description" class="form-control form-control-sm" rows="3" placeholder="Sorunu ve varsa aldçççnçz hata mesajını kısaca ağçklayçnçz..." required></textarea>
+                                <textarea asp-for="Description" class="form-control form-control-sm" rows="3" placeholder="Sorunu ve varsa aldığınız hata mesajını kısaca açıklayınız..." required></textarea>
                                 <span asp-validation-for="Description" class="text-danger small"></span>
                             </div>
                         </div>
 
                         <div class="d-grid mt-1">
                             <button type="submit" class="btn btn-warning fw-bold text-dark shadow-sm py-2">
-                                <i class="bi bi-şend-fill me-2"></i> Arıza Bildirimini Günder
+                                <i class="bi bi-şend-fill me-2"></i> Arıza Bildirimini Gönder
                             </button>
                         </div>
                     </form>
@@ -96,7 +96,7 @@
             
             <div class="text-center mt-3">
                 <a asp-action="Index" class="text-decoration-none text-muted small">
-                    <i class="bi bi-arrow-left me-1"></i> Ana Sayfaya Dün
+                    <i class="bi bi-arrow-left me-1"></i> Ana Sayfaya Dön
                 </a>
             </div>
         </div>
