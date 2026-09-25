@@ -25,14 +25,14 @@
                 <i class="bi bi-exclamation-triangle-fill me-1"></i> Acil Bant
             </a>
             <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Panele Dün
+                <i class="bi bi-arrow-left me-1"></i> Panele Dön
             </a>
         </div>
     </div>
 
 
 
-    <!-- ÜSTATÜSTçKLER VE FİLTRE -->
+    <!-- İSTATİSTİKLER VE FİLTRE -->
     <div class="row g-3 mb-3">
         <div class="col-md-4">
             <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-primary">
@@ -64,7 +64,7 @@
             <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-warning">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <div class="text-warning-emphasis small fw-semibold">Kategöri Sayişi</div>
+                        <div class="text-warning-emphasis small fw-semibold">Kategori Sayısı</div>
                         <div class="fs-4 fw-bold text-dark">@categories.Count</div>
                     </div>
                     <div class="rounded-circle bg-warning bg-opacity-10 p-3 text-warning">
@@ -89,7 +89,7 @@
                     <div class="input-group input-group-sm">
                         <span class="input-group-text bg-light"><i class="bi bi-tag"></i></span>
                         <select name="category" class="form-select">
-                            <option value="Tümç">Tüm Kategöriler</option>
+                            <option value="Tümç">Tüm Kategoriler</option>
                             @foreach (var c in categories)
                             {
                                 <option value="@c" selected="@(selectedCat == c)">@c</option>
@@ -112,7 +112,7 @@
     <!-- DUYURU TABLOSU -->
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
         <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-            <span class="fw-bold text-dark"><i class="bi bi-list-stars me-1"></i> Kayıtlç Duyurular (@Model.Count)</span>
+            <span class="fw-bold text-dark"><i class="bi bi-list-stars me-1"></i> Kayıtlı Duyurular (@Model.Count)</span>
             <a asp-action="CreateAnnouncement" class="btn btn-primary btn-sm px-3" style="background-color: var(--primary-color);">
                 <i class="bi bi-plus-lg me-1"></i> Yeni Duyuru
             </a>
@@ -122,8 +122,8 @@
                 <thead class="table-light small">
                     <tr>
                         <th style="width: 50px;" class="text-center">#</th>
-                        <th>Duyuru Bağlıçç & Özet</th>
-                        <th style="width: 130px;">Kategöri</th>
+                        <th>Duyuru Başlığı & Özet</th>
+                        <th style="width: 130px;">Kategori</th>
                         <th style="width: 120px;">Yayın Tarihi</th>
                         <th class="text-center" style="width: 100px;">Okunma</th>
                         <th class="text-center" style="width: 110px;">Durum</th>
@@ -136,7 +136,7 @@
                         <tr>
                             <td colspan="7" class="text-center py-5 text-muted">
                                 <i class="bi bi-megaphone fs-1 d-block mb-2 text-secondary"></i>
-                                Henüz eklenmiş duyuru bulunmuyor veya aramançza uygün sonuç bulunamadı.
+                                Henüz eklenmiş duyuru bulunmuyor veya aramanıza uygun sonuç bulunamadı.
                             </td>
                         </tr>
                     }
@@ -165,7 +165,7 @@
                                 <form asp-action="ToggleAnnouncementStatus" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="badge border-0 @(item.IsActive ? "bg-success" : "bg-secondary") text-white px-2 py-1" style="cursor: pointer;" title="Durumu değiçtirmek için tıklayçn">
+                                    <button type="submit" class="badge border-0 @(item.IsActive ? "bg-success" : "bg-secondary") text-white px-2 py-1" style="cursor: pointer;" title="Durumu değiştirmek için tıklayın">
                                         <i class="bi @(item.IsActive ? "bi-check-circle-fill" : "bi-pause-circle-fill") me-1"></i>
                                         @(item.IsActive ? "YAYINDA" : "PASİF")
                                     </button>
@@ -193,7 +193,7 @@
                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body p-3">
-                                                <p class="small mb-0"><strong>@item.Title</strong> bağlçklç duyuruyu silmek istediğinize emin mişiniz?</p>
+                                                <p class="small mb-0"><strong>@item.Title</strong> Başlıklı duyuruyu silmek istediğinize emin misiniz?</p>
                                             </div>
                                             <div class="modal-footer bg-light py-2">
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">İptal</button>
