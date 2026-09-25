@@ -66,7 +66,7 @@ namespace OrduNet.Web.Services
             worksheet.Cell(2, 1).Value = "Ahmet";
             worksheet.Cell(2, 2).Value = "YILMAZ";
             worksheet.Cell(2, 3).Value = "Zabıt Kâtibi";
-            worksheet.Cell(2, 4).Value = "1. A��r Ceza Mahkemesi";
+            worksheet.Cell(2, 4).Value = "1. Aççr Ceza Mahkemesi";
             worksheet.Cell(2, 5).Value = "1104";
             worksheet.Cell(2, 6).Value = "";
             worksheet.Cell(2, 7).Value = "203";
@@ -76,7 +76,7 @@ namespace OrduNet.Web.Services
 
             worksheet.Cell(3, 1).Value = "Fatma";
             worksheet.Cell(3, 2).Value = "KAYA";
-            worksheet.Cell(3, 3).Value = "Yazı İşleri Müdür�";
+            worksheet.Cell(3, 3).Value = "Yazı İşleri Müdürç";
             worksheet.Cell(3, 4).Value = "1. Asliye Hukuk Mahkemesi";
             worksheet.Cell(3, 5).Value = "1201";
             worksheet.Cell(3, 6).Value = "";
@@ -97,10 +97,10 @@ namespace OrduNet.Web.Services
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Ordu Adliyesi Rehber");
 
-            // üst kurumsal bağl�k
+            // üst kurumsal bağlçk
             worksheet.Range("A1:J1").Merge();
             var titleCell = worksheet.Cell("A1");
-            titleCell.Value = "T.C. ORDU ADALET SARAYI - DAH�L� TELEFON REHBERİ";
+            titleCell.Value = "T.C. ORDU ADALET SARAYI - DAHçLç TELEFON REHBERİ";
             titleCell.Style.Font.Bold = true;
             titleCell.Style.Font.FontSize = 14;
             titleCell.Style.Font.FontColor = XLColor.White;
@@ -117,7 +117,7 @@ namespace OrduNet.Web.Services
             subCell.Style.Fill.BackgroundColor = XLColor.FromHtml("#eef2f5");
             subCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
-            // Sütun Bağlıklar�
+            // Sütun Bağlıklarç
             string[] headers = new[]
             {
                 "Sıra",
@@ -220,7 +220,7 @@ namespace OrduNet.Web.Services
 
                     if (string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName))
                     {
-                        continue; // Bo� satır atla
+                        continue; // Boç satır atla
                     }
 
                     if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) ||
@@ -309,8 +309,8 @@ namespace OrduNet.Web.Services
             // Örnek Satırlar
             var sampleRows = new[]
             {
-                ("1. A��r Ceza Mahkemesi", "Ceza Mahkemeleri", "A Blok - Kat 2, Kalem 210", 10),
-                ("Cumhuriyet Savcılığı� �n Büro", "Cumhuriyet Bağsavcıl���", "Giriş Kat - Kalem 102", 20),
+                ("1. Aççr Ceza Mahkemesi", "Ceza Mahkemeleri", "A Blok - Kat 2, Kalem 210", 10),
+                ("Cumhuriyet Savcılığıç çn Büro", "Cumhuriyet Bağsavcılççç", "Giriş Kat - Kalem 102", 20),
                 ("1. Asliye Hukuk Mahkemesi", "Hukuk Mahkemeleri", "B Blok - Kat 1, Kalem 115", 30),
                 ("İcra Dairesi", "İcra & İflas", "Zemin Kat - Oda 012", 40),
                 ("Bilgi İşlem şefliği", "İdari Birimler", "Zemin Kat - Kalem 005", 50)
@@ -358,7 +358,7 @@ namespace OrduNet.Web.Services
                     string orderStr = grid.GetCell(r, 4).Text?.Trim() ?? string.Empty;
 
                     if (string.IsNullOrWhiteSpace(name))
-                        continue; // Bo� satırı atla
+                        continue; // Boç satırı atla
 
                     if (string.IsNullOrWhiteSpace(Category))
                         Category = "Genel";
@@ -400,7 +400,7 @@ namespace OrduNet.Web.Services
             }
             catch (Exception ex)
             {
-                errors.Add($"Birimler aktar�l�rken hata olüstu: {ex.Message}");
+                errors.Add($"Birimler aktarçlçrken hata olüstu: {ex.Message}");
             }
 
             return (successCount, errors);
@@ -436,7 +436,7 @@ namespace OrduNet.Web.Services
                 cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
             }
 
-            // O ay�n gönlerini otomatik listele
+            // O ayçn gönlerini otomatik listele
             int daysInMonth = DateTime.DaysInMonth(year, month);
             int row = 2;
 
@@ -457,7 +457,7 @@ namespace OrduNet.Web.Services
                 else if (row == 2)
                 {
                     // İlk hafta işi günone Örnek satır
-                    worksheet.Cell(row, 3).Value = "Mercimek Çorbas�";
+                    worksheet.Cell(row, 3).Value = "Mercimek Çorbasç";
                     worksheet.Cell(row, 4).Value = "İzmir Köfte";
                     worksheet.Cell(row, 5).Value = "Pirinç Pilavı";
                     worksheet.Cell(row, 6).Value = "Mevsim Salata";
@@ -519,7 +519,7 @@ namespace OrduNet.Web.Services
                     }
                 }
 
-                // Eğer en az 3 farklı tarih hücresi bulunduysa ve bunlar birden fazla sütuna dağ�lm��sa -> MATRİS TAKVİM FORMATI
+                // Eğer en az 3 farklı tarih hücresi bulunduysa ve bunlar birden fazla sütuna dağçlmççsa -> MATRİS TAKVİM FORMATI
                 bool isMatrixCalendar = detectedDates.Count >= 3 && detectedDates.Select(d => d.Col).Distinct().Count() >= 2;
 
                 if (isMatrixCalendar)
@@ -532,7 +532,7 @@ namespace OrduNet.Web.Services
                         int col = dateItem.Col;
                         int dateRow = dateItem.Row;
 
-                        // Gün adı tespiti: Genelde tarihin hemen alt�ndaki satırdadır (Örn: SALI, ÇARŞAMBA)
+                        // Gün adı tespiti: Genelde tarihin hemen altçndaki satırdadır (Örn: SALI, ÇARŞAMBA)
                         string dayName = string.Empty;
                         int startFoodRow = dateRow + 1;
 
@@ -547,7 +547,7 @@ namespace OrduNet.Web.Services
                             dayName = menuDate.ToString("dddd", trCulture);
                         }
 
-                        // Bir sonraki haftanın bağlang�� satırını bul
+                        // Bir sonraki haftanın bağlangçç satırını bul
                         var nextDateRows = distinctDateRows.Where(r => r > dateRow).ToList();
                         int maxFoodRow = nextDateRows.Any() ? nextDateRows.Min() - 1 : Math.Min(dateRow + 25, grid.RowCount);
 
@@ -582,7 +582,7 @@ namespace OrduNet.Web.Services
                         if (!dayFoodItems.Any())
                             continue;
 
-                        // Ak�ll� Yemek Sınıfland�rmas�
+                        // Akçllç Yemek Sınıflandçrmasç
                         var (soups, mainDishes, sides, dessertsAndSalads) = CategörizeFoodItems(dayFoodItems, trCulture);
 
                         string soupStr = soups.Any() ? Truncate(string.Join(" / ", soups), 490) : "-";
@@ -623,7 +623,7 @@ namespace OrduNet.Web.Services
                 }
                 else
                 {
-                    // 2. ADIM: Standart Düz Tablo Formatı (Satır satır �ablon formatı)
+                    // 2. ADIM: Standart Düz Tablo Formatı (Satır satır çablon formatı)
                     for (int r = 2; r <= grid.RowCount; r++)
                     {
                         var dateCell = grid.GetCell(r, 1);
@@ -823,10 +823,10 @@ namespace OrduNet.Web.Services
             }
             catch
             {
-                // ClosedXML de ağamazsa HTML/XML formatın� kontrol et
+                // ClosedXML de ağamazsa HTML/XML formatınç kontrol et
             }
 
-            // 3. ADIM: HTML Tablo veya XML Spreadsheet Kontrolü (ERP / Web tabanlı yemek programlarının .xls Çıktıs�)
+            // 3. ADIM: HTML Tablo veya XML Spreadsheet Kontrolü (ERP / Web tabanlı yemek programlarının .xls Çıktısç)
             ms.Position = 0;
             try
             {
@@ -850,7 +850,7 @@ namespace OrduNet.Web.Services
         {
             var grid = new ExcelGrid();
 
-            // HTML tablosundaki <tr> satırlar�n� bul
+            // HTML tablosundaki <tr> satırlarçnç bul
             var rowMatches = Regex.Matches(htmlContent, @"<tr[^>]*>(.*?)</tr>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             int r = 1;
             foreach (Match rm in rowMatches)
@@ -901,7 +901,7 @@ namespace OrduNet.Web.Services
         }
 
         // ==========================================
-        // YARDIMCI METOTLAR: TARİH & YEMEK AYRI�TIRMA
+        // YARDIMCI METOTLAR: TARİH & YEMEK AYRIçTIRMA
         // ==========================================
         private class DetectedDateCell
         {
@@ -958,7 +958,7 @@ namespace OrduNet.Web.Services
                    upper == "ÇARŞAMBA" || upper == "ÇARŞAMBA" ||
                    upper == "PERŞEMBE" || upper == "PERŞEMBE" ||
                    upper == "CUMA" ||
-                   upper == "CUMARTES�" || upper == "CUMARTESI" ||
+                   upper == "CUMARTESç" || upper == "CUMARTESI" ||
                    upper == "PAZAR";
         }
 
@@ -970,7 +970,7 @@ namespace OrduNet.Web.Services
 
             string upper = t.ToUpper(new CultureInfo("tr-TR"));
 
-            // Tablo bağl���, firma bilgişi, sayfa numarası veya gün adı ise yemek değildir
+            // Tablo bağlççç, firma bilgişi, sayfa numarası veya gün adı ise yemek değildir
             if (upper.StartsWith("SAYFA") ||
                 upper.Contains("RESTAURANT") ||
                 upper.Contains("CATERING") ||
@@ -978,7 +978,7 @@ namespace OrduNet.Web.Services
                 upper.Contains("GIDA MÜHENDİSİ") ||
                 upper.Contains("ESRA AKKOŞE") ||
                 upper.Contains("ESRA AKKOŞE") ||
-                upper.Contains("BA�SAVCILIK") ||
+                upper.Contains("BAçSAVCILIK") ||
                 upper.Contains("BASSAVCILIK") ||
                 upper.Contains("YEMEK MENÜ") ||
                 upper.Contains("YEMEK MENU") ||
@@ -1003,7 +1003,7 @@ namespace OrduNet.Web.Services
         {
             if (string.IsNullOrWhiteSpace(name)) return string.Empty;
             string trimmed = name.Trim();
-            // Türkçe Bağlık Yazım�na dün��t�r (Örn: "IZGARA TAVUK" -> "Izgara Tavuk")
+            // Türkçe Bağlık Yazımçna dünççtçr (Örn: "IZGARA TAVUK" -> "Izgara Tavuk")
             return culture.TextInfo.ToTitleCase(trimmed.ToLower(culture));
         }
 
@@ -1025,7 +1025,7 @@ namespace OrduNet.Web.Services
                     upper.Contains("EZOGELİN") || upper.Contains("EZOGELİN") ||
                     upper.Contains("MERCİMEK") || upper.Contains("MERCİMEK") ||
                     upper.Contains("TARHANA") || upper.Contains("ALACA") ||
-                    upper.Contains("YAYLA") || upper.Contains("D���N") ||
+                    upper.Contains("YAYLA") || upper.Contains("DçççN") ||
                     upper.Contains("DUGUN") || upper.Contains("TAVUK SUYU") ||
                     upper.Contains("İŞKEMBE") || upper.Contains("İŞKEMBE") ||
                     upper.Contains("BROKOLİ") || upper.Contains("BROKOLİ"))
@@ -1037,7 +1037,7 @@ namespace OrduNet.Web.Services
                          upper.Contains("BULGUR") || upper.Contains("PİRİNÇ") ||
                          upper.Contains("PİRİNÇ") || upper.Contains("MAKARNA") ||
                          upper.Contains("SPAGETTİ") || upper.Contains("SPAGETTİ") ||
-                         upper.Contains("ER��TE") || upper.Contains("ERİŞTE") ||
+                         upper.Contains("ERççTE") || upper.Contains("ERİŞTE") ||
                          upper.Contains("BÖREK") || upper.Contains("BÖREK") ||
                          upper.Contains("DÖBLE") || upper.Contains("DIBLE") ||
                          upper.Contains("MANTI") || upper.Contains("MÜCVER") ||

@@ -1,6 +1,6 @@
 ﻿@model List<OrduNet.Web.Models.Entities.CafeteriaMenu>
 @{
-    ViewData["Title"] = "Ayl�k Yemek Listesi";
+    ViewData["Title"] = "Aylık Yemek Listesi";
     int currentYear = ViewBag.SelectedYear ?? DateTime.Today.Year;
     int currentMonth = ViewBag.SelectedMonth ?? DateTime.Today.Month;
     string monthName = ViewBag.MonthName as string ?? DateTime.Today.ToString("MMMM yyyy");
@@ -23,10 +23,10 @@
             <h3 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
                 <i class="bi bi-cup-hot-fill text-warning"></i> Adliye Personeli Yemek Listesi
             </h3>
-            <small class="text-muted">T.C. Ordu Adalet Sarayı tabildot �ile yemeği ayl�k menü Çizelgesi (Servis: 12:00 - 13:30)</small>
+            <small class="text-muted">T.C. Ordu Adalet Sarayı tabildot çile yemeği aylçk menü Çizelgesi (Servis: 12:00 - 13:30)</small>
         </div>
 
-        <!-- Ay Değiştirici & Yazdır Butonlar� -->
+        <!-- Ay Değiştirici & Yazdır Butonlarç -->
         <div class="d-flex align-items-center gap-2 no-print">
             <div class="btn-group btn-group-sm shadow-sm" role="group">
                 <a asp-action="Menu" asp-route-year="@prevMonthDate.Year" asp-route-month="@prevMonthDate.Month" class="btn btn-outline-secondary" title="Önceki Ay">
@@ -40,14 +40,14 @@
                 </a>
             </div>
 
-            <button type="button" onclick="window.print();" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 shadow-sm" title="Ayl�k Listeyi Yazdır">
+            <button type="button" onclick="window.print();" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 shadow-sm" title="Aylık Listeyi Yazdır">
                 <i class="bi bi-printer"></i>
                 <span class="d-none d-sm-inline">Yazdır</span>
             </button>
         </div>
     </div>
 
-    <!-- Bugünün Menüs� Vurgulama Banner'� (Eğer bu ayda bugün varsa) -->
+    <!-- Bugünün Menüsç Vurgulama Banner'ç (Eğer bu ayda bugün varsa) -->
     @if (todayMenu != null)
     {
         <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden border-start border-4 border-warning no-print" style="background: linear-gradient(135deg, #ffffff 0%, #f7fafb 100%);">
@@ -55,7 +55,7 @@
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 pb-2 border-bottom">
                     <div class="d-flex align-items-center gap-2">
                         <span class="badge bg-warning text-dark fw-bold px-3 py-1 fs-6">
-                            <i class="bi bi-star-fill me-1"></i> BUGÜNÜN MENÜS�
+                            <i class="bi bi-star-fill me-1"></i> BUGÜNÜN MENÜSç
                         </span>
                         <span class="text-dark fw-semibold">@todayMenu.Date.ToString("dd MMMM yyyy, dddd")</span>
                     </div>
@@ -108,16 +108,16 @@
         </div>
     }
 
-    <!-- Ayl�k Liste Kartları -->
+    <!-- Aylık Liste Kartları -->
     @if (!Model.Any())
     {
         <div class="card border-0 shadow-sm p-5 text-center text-muted rounded-3">
             <i class="bi bi-cup-straw fs-1 text-secondary mb-2"></i>
             <h5 class="fw-bold text-dark">@monthName Dönemine Ait Menü Bulunamadı</h5>
-            <p class="small text-muted mb-3">Bu ay için henüz yemek listesi sisteme yüklenmemi� olabilir.</p>
+            <p class="small text-muted mb-3">Bu ay için henüz yemek listesi sisteme yüklenmemiç olabilir.</p>
             <div>
                 <a asp-action="Menu" asp-route-year="@DateTime.Today.Year" asp-route-month="@DateTime.Today.Month" class="btn btn-outline-primary btn-sm px-3">
-                    <i class="bi bi-calendar-check me-1"></i> Bu Ay�n Menüsöne Git
+                    <i class="bi bi-calendar-check me-1"></i> Bu Ayçn Menüsöne Git
                 </a>
             </div>
         </div>
@@ -132,7 +132,7 @@
 
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden @(isToday ? "border border-2 border-warning" : "")">
-                        <!-- Gün Bağlı�� -->
+                        <!-- Gün Bağlıçç -->
                         <div class="card-header py-2 px-3 text-white d-flex justify-content-between align-items-center" 
                              style="background-color: @(isToday ? "var(--primary-color)" : (isWeekend ? "#6c757d" : "#244a53"));">
                             <span class="fw-bold small">

@@ -57,7 +57,7 @@
                     </div>
                     <div class="quick-card-info">
                         <h3>Yemek Listesi</h3>
-                        <p>Haftalık ve günlük adliye personeli tabildot yemek menüs�</p>
+                        <p>Haftalık ve günlük adliye personeli tabildot yemek menüsç</p>
                     </div>
                 </a>
             </div>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="quick-card-info">
                         <h3>Nöbet Çizelgesi</h3>
-                        <p>Günün nöbet�i ağ�r ceza, asliye ceza, sulh ceza ve savcılık birimleri</p>
+                        <p>Günün nöbetçi ağçr ceza, asliye ceza, sulh ceza ve savcılık birimleri</p>
                     </div>
                 </a>
             </div>
@@ -101,7 +101,7 @@
                 </span> -->
             </div>
 
-            <!-- 2 Kart Y�ksekliçinde Scroll Edilebilir Duyuru Alanı -->
+            <!-- 2 Kart Yçksekliçinde Scroll Edilebilir Duyuru Alanı -->
             <div class="announcements-scroll-container">
                 <div class="d-flex flex-column gap-2">
                     @foreach (var item in Model.Announcements)
@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <!-- SAĞ SÜTUN: GÜNÜN YEMEK MENÜS� BİLEŞENİ -->
+        <!-- SAĞ SÜTUN: GÜNÜN YEMEK MENÜSç BİLEŞENİ -->
         <div class="col-lg-4 d-flex flex-column"> 
             <div class="section-heading">
                 <h2>Yemek Menüsü</h2>
@@ -209,7 +209,7 @@
                     </div>
                     <div class="card-footer bg-light text-center py-1">
                         <a asp-controller="Duty" asp-action="Menu" class="text-decoration-none small fw-bold text-primary">
-                            Ayl�k Yemek Listesi <i class="bi bi-chevron-right"></i>
+                            Aylık Yemek Listesi <i class="bi bi-chevron-right"></i>
                         </a>
                     </div>
                 </div>
@@ -219,7 +219,7 @@
                 <div class="card border-0 shadow-sm rounded-3 overflow-hidden food-menu-card">
                     <div class="card-header text-white py-2 d-flex justify-content-between align-items-center" style="background-color: #1b4b57;">
                         <div class="fw-bold fs-6">
-                            <i class="bi bi-cup-hot me-2 text-warning"></i> Günün Menüs�
+                            <i class="bi bi-cup-hot me-2 text-warning"></i> Günün Menüsç
                         </div>
                         <span class="badge bg-light text-dark">@DateTime.Today.ToString("dd.MM.yyyy")</span>
                     </div>
@@ -229,7 +229,7 @@
                         </div>
                         <h6 class="fw-bold text-dark mb-1">Bugün Menü Bulunmuyor</h6>
                         <p class="text-muted small mb-2">
-                            @(DateTime.Today.DayOfWeek == DayOfWeek.Saturday || DateTime.Today.DayOfWeek == DayOfWeek.Sunday ? "Hafta sonu nedeniyle yemek servişi yoktur." : "Bugünün menüs� girilmemiş veya resmi tatil olabilir.")
+                            @(DateTime.Today.DayOfWeek == DayOfWeek.Saturday || DateTime.Today.DayOfWeek == DayOfWeek.Sunday ? "Hafta sonu nedeniyle yemek servişi yoktur." : "Bugünün menüsç girilmemiş veya resmi tatil olabilir.")
                         </p>
                         <a asp-controller="Duty" asp-action="Menu" class="btn btn-outline-primary btn-sm px-3">
                             <i class="bi bi-calendar3 me-1"></i> Aylık Listeyi Gör
@@ -237,7 +237,7 @@
                     </div>
                     <div class="card-footer bg-light text-center py-1">
                         <a asp-controller="Duty" asp-action="Menu" class="text-decoration-none small fw-bold text-primary">
-                            Ayl�k Yemek Listesi <i class="bi bi-chevron-right"></i>
+                            Aylık Yemek Listesi <i class="bi bi-chevron-right"></i>
                         </a>
                     </div>
                 </div>

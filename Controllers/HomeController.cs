@@ -42,7 +42,7 @@ namespace OrduNet.Web.Controllers
                 .Take(5)
                 .ToListAsync();
 
-            // Sadece bugünün tarihine ait yemek menüs�n� getir
+            // Sadece bugünün tarihine ait yemek menüsçnç getir
             var todayMenu = await _context.CafeteriaMenus
                 .FirstOrDefaultAsync(m => m.Date.Date == today);
 
@@ -148,7 +148,7 @@ namespace OrduNet.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Aynı kişiye ait, aynı konuda ağ�k/işlemde olan talep var m� kontrolü
+                // Aynı kişiye ait, aynı konuda ağçk/işlemde olan talep var mç kontrolü
                 var hasActiveTicket = await _context.IssueTickets
                     .AnyAsync(t => t.RequesterName == model.RequesterName.Trim() 
                                 && t.Category == model.Category 
@@ -157,7 +157,7 @@ namespace OrduNet.Web.Controllers
                 if (hasActiveTicket)
                 {
                     ViewBag.Categories = await _context.TicketCategories.Where(c => c.IsActive).OrderBy(c => c.Name).ToListAsync();
-                    TempData["ErrorMessage"] = "Bu konuda henüz sonuilanmam�� ağ�k bir arıza talebiniz bulunmaktadır. Mevcut talebiniz kapatılmadan aynı konuda yeni talep olüsturamazs�n�z.";
+                    TempData["ErrorMessage"] = "Bu konuda henüz sonuilanmamçç ağçk bir arıza talebiniz bulunmaktadır. Mevcut talebiniz kapatılmadan aynı konuda yeni talep olüsturamazsçnçz.";
                     return View(model);
                 }
 

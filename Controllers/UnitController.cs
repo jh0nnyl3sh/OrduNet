@@ -80,7 +80,7 @@ namespace OrduNet.Web.Controllers
             {
                 if (unit.PersonnelList.Any())
                 {
-                    TempData["ErrorMessage"] = $"Bu birime bağl� {unit.PersonnelList.Count} Personel bulunmaktadır. Önce Personelleri aktarınız veya siliniz.";
+                    TempData["ErrorMessage"] = $"Bu birime bağlç {unit.PersonnelList.Count} Personel bulunmaktadır. Önce Personelleri aktarınız veya siliniz.";
                 }
                 else
                 {

@@ -7,12 +7,12 @@ namespace OrduNet.Web.Models.Entities
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Arıza bağl��� / konusu zorunludur.")]
+        [Required(ErrorMessage = "Arıza bağlççç / konusu zorunludur.")]
         [StringLength(150)]
         [Display(Name = "Arıza Konusu")]
         public string Title { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Arıza ağ�klamas� zorunludur.")]
+        [Required(ErrorMessage = "Arıza ağçklamasç zorunludur.")]
         [StringLength(1000)]
         [Display(Name = "Açıklama")]
         public string Description { get; set; } = string.Empty;
@@ -21,7 +21,7 @@ namespace OrduNet.Web.Models.Entities
         [StringLength(50)]
         [Display(Name = "Kategöri")]
         public string Category { get; set; } = "Donanım / PC";
-        // Örn: "Donanım / PC", "Yazıc� / Tarayıcı", "UYAP / Yazıl�m", "A� / internet", "Diğer"
+        // Örn: "Donanım / PC", "Yazıcç / Tarayıcı", "UYAP / Yazılçm", "Aç / internet", "Diğer"
 
         [Required(ErrorMessage = "Talep eden adı soyadı zorunludur.")]
         [StringLength(100)]
@@ -55,7 +55,7 @@ namespace OrduNet.Web.Models.Entities
         [Display(Name = "Teknik Servis Notu")]
         public string? AdminNotes { get; set; }
 
-        // Arızay� çözecek / Atanan Teknik Personel Bilgileri
+        // Arızayç çözecek / Atanan Teknik Personel Bilgileri
         [Display(Name = "Atanan Teknisyen")]
         public int? AssignedTechnicianId { get; set; }
 

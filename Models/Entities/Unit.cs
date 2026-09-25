@@ -15,7 +15,7 @@ namespace OrduNet.Web.Models.Entities
         [StringLength(100)]
         [Display(Name = "Kategöri")]
         public string Category { get; set; } = "Genel"; 
-        // Örn: "Cumhuriyet Bağsavcıl���", "Ceza Mahkemeleri", "Hukuk Mahkemeleri", "İcra & İflas", "İdari Birimler", "Komisyon & Yönetim"
+        // Örn: "Cumhuriyet Bağsavcılççç", "Ceza Mahkemeleri", "Hukuk Mahkemeleri", "İcra & İflas", "İdari Birimler", "Komisyon & Yönetim"
 
         [Display(Name = "Sıralama")]
         public int DisplayOrder { get; set; } = 0;

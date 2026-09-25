@@ -14,7 +14,7 @@ namespace OrduNet.Web.Models.Entities
         [StringLength(100)]
         [Display(Name = "Nöbet Türü")]
         public string DutyType { get; set; } = string.Empty; 
-        // Örn: "Nöbet�i A��r Ceza Mahkemesi", "Nöbet�i Asliye Ceza Mahkemesi", "Nöbet�i Sulh Ceza Hâkimlişi", "Nöbet�i Cumhuriyet Savcışi", "Nöbet�i Noter"
+        // Örn: "Nöbetçi Aççr Ceza Mahkemesi", "Nöbetçi Asliye Ceza Mahkemesi", "Nöbetçi Sulh Ceza Hâkimlişi", "Nöbetçi Cumhuriyet Savcışi", "Nöbetçi Noter"
 
         [Required]
         [StringLength(150)]

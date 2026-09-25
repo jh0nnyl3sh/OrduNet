@@ -15,7 +15,7 @@ namespace OrduNet.Web.Models.Entities
         [Required]
         [StringLength(50)]
         public string ModuleKey { get; set; } = string.Empty;
-        // Modül Anahtarlar�: "Directory", "Announcements", "Cafeteria", "Duties", "IssueTracker", "UserManagement"
+        // Modül Anahtarlarç: "Directory", "Announcements", "Cafeteria", "Duties", "IssueTracker", "UserManagement"
 
         public bool CanManage { get; set; } = true;
     }

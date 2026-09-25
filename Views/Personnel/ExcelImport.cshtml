@@ -15,15 +15,15 @@
                     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Panoya Dün</a>
                 </div>
                 <div class="card-body p-4">
-                    <!-- ADIM 1: �ABLON İNDİRME -->
+                    <!-- ADIM 1: çABLON İNDİRME -->
                     <div class="p-3 bg-light rounded-3 border mb-4">
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                             <div>
-                                <h6 class="fw-bold mb-1"><i class="bi bi-1-circle-fill text-primary me-1"></i> Adım 1: Excel �ablonunu indirin</h6>
-                                <p class="text-muted small mb-0">Sütun bağl�klar�n�n ve veri formatın�n hazır olduğu Örnek Excel dosyasını bilgisayarın�za indirin.</p>
+                                <h6 class="fw-bold mb-1"><i class="bi bi-1-circle-fill text-primary me-1"></i> Adım 1: Excel çablonunu indirin</h6>
+                                <p class="text-muted small mb-0">Sütun bağlçklarçnçn ve veri formatınçn hazır olduğu Örnek Excel dosyasını bilgisayarınçza indirin.</p>
                             </div>
                             <a asp-action="DownloadTemplate" class="btn btn-success btn-sm fw-bold">
-                                <i class="bi bi-download me-1"></i> �ablonu indir (.xlsx)
+                                <i class="bi bi-download me-1"></i> çablonu indir (.xlsx)
                             </a>
                         </div>
                     </div>
@@ -35,10 +35,10 @@
                         <div asp-validation-summary="All" class="text-danger small mb-3"></div>
 
                         <div class="mb-4">
-                            <label class="form-label text-muted small">Hazırladı��n�z Excel (.xlsx) dosyasını seçiniz:</label>
+                            <label class="form-label text-muted small">Hazırladıççnçz Excel (.xlsx) dosyasını seçiniz:</label>
                             <input type="file" name="excelFile" class="form-control form-control-lg" accept=".xlsx" required />
                             <div class="form-text">
-                                <i class="bi bi-info-circle me-1"></i> Sistem dosyadaki <code>Ad</code>, <code>Soyad</code>, <code>Unvan</code>, <code>Birim</code> ve <code>Dahili No</code> alanların� otomatik okuyup kaydedecektir.
+                                <i class="bi bi-info-circle me-1"></i> Sistem dosyadaki <code>Ad</code>, <code>Soyad</code>, <code>Unvan</code>, <code>Birim</code> ve <code>Dahili No</code> alanlarınç otomatik okuyup kaydedecektir.
                             </div>
                         </div>
 
@@ -56,7 +56,7 @@
                         <div class="alert alert-success mt-4 d-flex align-items-center" role="alert">
                             <i class="bi bi-check-circle-fill fs-4 me-3"></i>
                             <div>
-                                <strong>İşlem Başarıl�!</strong> Toplam <strong>@successCount</strong> personel kaydı sisteme başarıyla aktarıldı.
+                                <strong>İşlem Başarılç!</strong> Toplam <strong>@successCount</strong> personel kaydı sisteme başarıyla aktarıldı.
                             </div>
                         </div>
                     }
@@ -64,7 +64,7 @@
                     @if (errors != null && errors.Any())
                     {
                         <div class="alert alert-warning mt-4" role="alert">
-                            <h6 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Baz� Satırlarda Uyarı/Hatalar Oluştu:</h6>
+                            <h6 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Bazç Satırlarda Uyarı/Hatalar Oluştu:</h6>
                             <ul class="mb-0 small ps-3">
                                 @foreach (var err in errors)
                                 {

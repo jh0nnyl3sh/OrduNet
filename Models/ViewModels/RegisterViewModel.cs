@@ -22,7 +22,7 @@ namespace OrduNet.Web.Models.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Şifre Tekrar")]
-        [Compare("Password", ErrorMessage = "Şifreler eşle�miyor.")]
+        [Compare("Password", ErrorMessage = "Şifreler eşleçmiyor.")]
         public string ConfirmPassword { get; set; } = string.Empty;
 
         [StringLength(100)]

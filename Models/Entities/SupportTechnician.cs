@@ -27,7 +27,7 @@ namespace OrduNet.Web.Models.Entities
 
         [StringLength(500)]
         [Display(Name = "Uzmanlık Alanları")]
-        public string? Specialties { get; set; } // Virgülle ayr�lm�� kategöri işimleri veya ID'leri
+        public string? Specialties { get; set; } // Virgülle ayrçlmçç kategöri işimleri veya ID'leri
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

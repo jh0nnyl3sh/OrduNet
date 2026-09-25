@@ -22,7 +22,7 @@ namespace OrduNet.Web.Models.Entities
         [Required]
         [StringLength(50)]
         [Display(Name = "Kategöri")]
-        public string Category { get; set; } = "DUYURU"; // DUYURU, HABER, ANLA�MA, ETKİNLİK
+        public string Category { get; set; } = "DUYURU"; // DUYURU, HABER, ANLAçMA, ETKİNLİK
 
         [StringLength(50)]
         public string BadgeClass { get; set; } = "badge-primary"; // badge-danger, badge-primary, badge-success, badge-warning
@@ -37,7 +37,7 @@ namespace OrduNet.Web.Models.Entities
         [Display(Name = "Göruntülenme Sayişi")]
         public int ViewCount { get; set; } = 0;
 
-        [Display(Name = "Yayında m�?")]
+        [Display(Name = "Yayında mç?")]
         public bool IsActive { get; set; } = true;
     }
 }

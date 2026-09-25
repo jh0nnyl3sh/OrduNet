@@ -13,7 +13,7 @@
                     <li class="breadcrumb-item active" aria-current="page">İşlem Günlükleri</li>
                 </ol>
             </nav>
-            <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history text-primary me-2"></i> Sistem Güvenlik & Denetim Günlü��</h3>
+            <h3 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history text-primary me-2"></i> Sistem Güvenlik & Denetim Günlüçç</h3>
         </div>
         <div class="d-flex gap-2">
             <a asp-action="BackupDatabase" class="btn btn-outline-success btn-sm">
@@ -28,7 +28,7 @@
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
         <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
             <span class="fw-bold text-dark"><i class="bi bi-shield-check me-1"></i> Son Sistem Hareketleri (Son @Model.Count Kayıt)</span>
-            <small class="text-muted">Kullanıcılar�n gerçekle�tirdişi ekleme, silme, güncelleme ve giriş işlemleri kayıt alt�ndadır.</small>
+            <small class="text-muted">Kullanıcılarçn gerçekleçtirdişi ekleme, silme, güncelleme ve giriş işlemleri kayıt altçndadır.</small>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0 small">
@@ -46,14 +46,14 @@
                     @if (!Model.Any())
                     {
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Henüz kaydedilmiş işlem günlü�� bulunmuyor.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Henüz kaydedilmiş işlem günlüçç bulunmuyor.</td>
                         </tr>
                     }
                     @foreach (var log in Model)
                     {
                         var badgeClass = log.Action switch
                         {
-                            "Giriş Başarıl�" => "bg-success text-white",
+                            "Giriş Başarılç" => "bg-success text-white",
                             "Çıkış" => "bg-secondary text-white",
                             "Kullanıcı Oluşturma" or "Personel Ekleme" => "bg-primary text-white",
                             "Personel Silme" => "bg-danger text-white",

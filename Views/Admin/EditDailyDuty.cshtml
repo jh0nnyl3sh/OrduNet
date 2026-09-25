@@ -1,15 +1,15 @@
 ﻿@model OrduNet.Web.Models.Entities.DailyDuty
 @{
-    ViewData["Title"] = "Nöbet�i Birim Düzenle";
+    ViewData["Title"] = "Nöbetçi Birim Düzenle";
 }
 
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
-                <i class="bi bi-pencil-square text-warning me-2"></i> Nöbet�i Düzenle
+                <i class="bi bi-pencil-square text-warning me-2"></i> Nöbetçi Düzenle
             </h2>
-            <div class="text-muted small">Nöbet bilgişi detayların� güncelleyin</div>
+            <div class="text-muted small">Nöbet bilgişi detaylarınç güncelleyin</div>
         </div>
         <div>
             <a asp-action="DailyDuties" class="btn btn-outline-secondary btn-sm">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Nöbet Türü *</label>
-                        <input type="text" asp-for="DutyType" class="form-control" required placeholder="Örn: Nöbet�i A��r Ceza Mahkemesi" />
+                        <input type="text" asp-for="DutyType" class="form-control" required placeholder="Örn: Nöbetçi Aççr Ceza Mahkemesi" />
                         <span asp-validation-for="DutyType" class="text-danger small"></span>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Görevli Birim / Kişi *</label>
-                        <input type="text" asp-for="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. A��r Ceza Mahkemesi" />
+                        <input type="text" asp-for="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. Aççr Ceza Mahkemesi" />
                         <span asp-validation-for="DutyOfficerOrUnit" class="text-danger small"></span>
                     </div>
                 </div>

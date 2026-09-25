@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrduNet.Web.Data;
 
@@ -51,7 +51,7 @@ namespace OrduNet.Web.Controllers
                 .OrderBy(m => m.Date)
                 .ToListAsync();
 
-            // Eğer seçilen ayda menü yoksa ve kullanıcı Özel bir ay seçmediyse veritabanındaki mevcut kayıtlar� göster
+            // Eğer seçilen ayda menü yoksa ve kullanıcı Özel bir ay seçmediyse veritabanındaki mevcut kayıtlarç göster
             if (!menus.Any() && !year.HasValue && !month.HasValue)
             {
                 menus = await _context.CafeteriaMenus

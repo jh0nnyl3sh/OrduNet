@@ -178,7 +178,7 @@ body {
 }
 
 /* ==========================================================================
-   HIZLI ER���M KARTLARI (QUICK ACCESS CARDS)
+   HIZLI ERçççM KARTLARI (QUICK ACCESS CARDS)
    ========================================================================== */
 .quick-access-section {
   padding: 8px 0 0 0;
@@ -396,7 +396,7 @@ body {
   justify-content: space-between;
 }
 
-/* Günün Yemek Menüs� Eşit Yükseklik */
+/* Günün Yemek Menüsç Eşit Yükseklik */
 .food-menu-card {
   height: 275px;
   max-height: 275px;
@@ -523,7 +523,7 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Tablo Gör�n�m� */
+/* Tablo Görçnçmç */
 .directory-table-card {
   background: #ffffff;
   border: 1px solid var(--border-color);
@@ -604,7 +604,7 @@ body {
 }
 
 /* ==========================================================================
-   FOOTER (BAKIRK�Y BENZER� 4 SÜTUNLU ALT KISIM)
+   FOOTER (BAKIRKçY BENZERç 4 SÜTUNLU ALT KISIM)
    ========================================================================== */
 .ordunet-footer {
   background-color: var(--primary-color);
@@ -686,7 +686,7 @@ body {
 }
 
 /* ==========================================================================
-   TOAST BİLDİRİMİ (DAH�L� KOPYALANDI)
+   TOAST BİLDİRİMİ (DAHçLç KOPYALANDI)
    ========================================================================== */
 .copy-toast {
   position: fixed;
@@ -778,7 +778,7 @@ body {
   overflow: hidden;
 }
 
-/* Bask� / Yazdırma Modu (Print Media Query) */
+/* Baskç / Yazdırma Modu (Print Media Query) */
 @media print {
   .ordunet-topbar,
   .ordunet-header,

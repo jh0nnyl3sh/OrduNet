@@ -28,7 +28,7 @@ namespace OrduNet.Web.Models.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Yeni Şifre Tekrar")]
-        [Compare("NewPassword", ErrorMessage = "Şifreler eşle�miyor.")]
+        [Compare("NewPassword", ErrorMessage = "Şifreler eşleçmiyor.")]
         public string? ConfirmNewPassword { get; set; }
     }
 }

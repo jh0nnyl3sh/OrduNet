@@ -1,15 +1,15 @@
 ﻿@model List<OrduNet.Web.Models.Entities.DailyDuty>
 @{
-    ViewData["Title"] = "Nöbet�i Birimler";
+    ViewData["Title"] = "Nöbetçi Birimler";
 }
 
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
             <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
-                <i class="bi bi-calendar-event text-warning me-2"></i> Nöbet�i Birimler Yönetimi
+                <i class="bi bi-calendar-event text-warning me-2"></i> Nöbetçi Birimler Yönetimi
             </h2>
-            <div class="text-muted small">Günlük nöbet�i mahkemeleri, savcılar� ve idari birimleri yönetin</div>
+            <div class="text-muted small">Günlük nöbetçi mahkemeleri, savcılarç ve idari birimleri yönetin</div>
         </div>
 
         <div class="d-flex gap-2">
@@ -17,7 +17,7 @@
                 <i class="bi bi-arrow-left me-1"></i> Panoya Dün
             </a>
             <button type="button" class="btn btn-warning btn-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#newDailyDutyModal">
-                <i class="bi bi-plus-circle me-1"></i> Yeni Nöbet�i Ekle
+                <i class="bi bi-plus-circle me-1"></i> Yeni Nöbetçi Ekle
             </button>
         </div>
     </div>
@@ -69,12 +69,12 @@
     </div>
 </div>
 
-<!-- YENİ NÖBETÇİ� MODAL -->
+<!-- YENİ NÖBETÇİç MODAL -->
 <div class="modal fade" id="newDailyDutyModal" tabindex="-1" aria-labelledby="newDailyDutyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow">
             <div class="modal-header text-white" style="background-color: var(--primary-color);">
-                <h5 class="modal-title" id="newDailyDutyModalLabel"><i class="bi bi-plus-circle text-warning me-2"></i> Yeni Nöbet�i Ekle</h5>
+                <h5 class="modal-title" id="newDailyDutyModalLabel"><i class="bi bi-plus-circle text-warning me-2"></i> Yeni Nöbetçi Ekle</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
             </div>
             <form asp-action="CreateDailyDuty" method="post">
@@ -86,11 +86,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nöbet Türü *</label>
-                        <input type="text" name="DutyType" class="form-control" required placeholder="Örn: Nöbet�i A��r Ceza Mahkemesi" />
+                        <input type="text" name="DutyType" class="form-control" required placeholder="Örn: Nöbetçi Aççr Ceza Mahkemesi" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Görevli Birim / Kişi *</label>
-                        <input type="text" name="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. A��r Ceza Mahkemesi" />
+                        <input type="text" name="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. Aççr Ceza Mahkemesi" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">İletişim Bilgişi</label>

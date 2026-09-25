@@ -24,7 +24,7 @@ namespace OrduNet.Web.Models.Entities
         [StringLength(100)]
         [Display(Name = "Unvan")]
         public string Title { get; set; } = string.Empty; 
-        // Örn: "Mahkeme Bağkan�", "Cumhuriyet Savcışi", "Yazı İşleri Müdür�", "Zabıt Kâtibi", "M�bağir", "Bilgisayar �iletmeni"
+        // Örn: "Mahkeme Bağkanç", "Cumhuriyet Savcışi", "Yazı İşleri Müdürç", "Zabıt Kâtibi", "Mçbağir", "Bilgisayar çiletmeni"
 
         [Display(Name = "Bağlı Olduğu Birim")]
         public int UnitId { get; set; }

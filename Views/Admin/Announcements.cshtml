@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Duyuru & Haber Yönetimi";
     Layout = "_Layout";
-    string selectedCat = ViewBag.SelectedCategory as string ?? "Tüm�";
+    string selectedCat = ViewBag.SelectedCategory as string ?? "Tümç";
     var categories = ViewBag.Categories as List<string> ?? new List<string>();
 }
 
@@ -32,7 +32,7 @@
 
 
 
-    <!-- ÜSTATÜST�KLER VE FİLTRE -->
+    <!-- ÜSTATÜSTçKLER VE FİLTRE -->
     <div class="row g-3 mb-3">
         <div class="col-md-4">
             <div class="card border-0 shadow-sm p-3 rounded-3 bg-white border-start border-4 border-primary">
@@ -89,7 +89,7 @@
                     <div class="input-group input-group-sm">
                         <span class="input-group-text bg-light"><i class="bi bi-tag"></i></span>
                         <select name="category" class="form-select">
-                            <option value="Tüm�">Tüm Kategöriler</option>
+                            <option value="Tümç">Tüm Kategöriler</option>
                             @foreach (var c in categories)
                             {
                                 <option value="@c" selected="@(selectedCat == c)">@c</option>
@@ -112,7 +112,7 @@
     <!-- DUYURU TABLOSU -->
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
         <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-            <span class="fw-bold text-dark"><i class="bi bi-list-stars me-1"></i> Kayıtl� Duyurular (@Model.Count)</span>
+            <span class="fw-bold text-dark"><i class="bi bi-list-stars me-1"></i> Kayıtlç Duyurular (@Model.Count)</span>
             <a asp-action="CreateAnnouncement" class="btn btn-primary btn-sm px-3" style="background-color: var(--primary-color);">
                 <i class="bi bi-plus-lg me-1"></i> Yeni Duyuru
             </a>
@@ -122,7 +122,7 @@
                 <thead class="table-light small">
                     <tr>
                         <th style="width: 50px;" class="text-center">#</th>
-                        <th>Duyuru Bağlı�� & Özet</th>
+                        <th>Duyuru Bağlıçç & Özet</th>
                         <th style="width: 130px;">Kategöri</th>
                         <th style="width: 120px;">Yayın Tarihi</th>
                         <th class="text-center" style="width: 100px;">Okunma</th>
@@ -136,7 +136,7 @@
                         <tr>
                             <td colspan="7" class="text-center py-5 text-muted">
                                 <i class="bi bi-megaphone fs-1 d-block mb-2 text-secondary"></i>
-                                Henüz eklenmiş duyuru bulunmuyor veya araman�za uygün sonuç bulunamadı.
+                                Henüz eklenmiş duyuru bulunmuyor veya aramançza uygün sonuç bulunamadı.
                             </td>
                         </tr>
                     }
@@ -165,7 +165,7 @@
                                 <form asp-action="ToggleAnnouncementStatus" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="badge border-0 @(item.IsActive ? "bg-success" : "bg-secondary") text-white px-2 py-1" style="cursor: pointer;" title="Durumu deği�tirmek için tıklay�n">
+                                    <button type="submit" class="badge border-0 @(item.IsActive ? "bg-success" : "bg-secondary") text-white px-2 py-1" style="cursor: pointer;" title="Durumu değiçtirmek için tıklayçn">
                                         <i class="bi @(item.IsActive ? "bi-check-circle-fill" : "bi-pause-circle-fill") me-1"></i>
                                         @(item.IsActive ? "YAYINDA" : "PASİF")
                                     </button>
@@ -193,7 +193,7 @@
                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body p-3">
-                                                <p class="small mb-0"><strong>@item.Title</strong> bağl�kl� duyuruyu silmek istediğinize emin mişiniz?</p>
+                                                <p class="small mb-0"><strong>@item.Title</strong> bağlçklç duyuruyu silmek istediğinize emin mişiniz?</p>
                                             </div>
                                             <div class="modal-footer bg-light py-2">
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">İptal</button>
