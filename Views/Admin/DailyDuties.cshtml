@@ -9,12 +9,12 @@
             <h2 class="fw-bold mb-1 text-primary" style="color: var(--primary-color) !important;">
                 <i class="bi bi-calendar-event text-warning me-2"></i> Nöbetçi Birimler Yönetimi
             </h2>
-            <div class="text-muted small">Günlük nöbetçi mahkemeleri, savcılarç ve idari birimleri yönetin</div>
+            <div class="text-muted small">Günlük nöbetçi mahkemeleri, savcıları ve idari birimleri yönetin</div>
         </div>
 
         <div class="d-flex gap-2">
             <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Panoya Dün
+                <i class="bi bi-arrow-left me-1"></i> Panoya Dön
             </a>
             <button type="button" class="btn btn-warning btn-sm fw-bold text-dark" data-bs-toggle="modal" data-bs-target="#newDailyDutyModal">
                 <i class="bi bi-plus-circle me-1"></i> Yeni Nöbetçi Ekle
@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<!-- YENİ NÖBETÇİç MODAL -->
+<!-- YENİ NÖBETÇİ MODAL -->
 <div class="modal fade" id="newDailyDutyModal" tabindex="-1" aria-labelledby="newDailyDutyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow">
@@ -86,14 +86,14 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nöbet Türü *</label>
-                        <input type="text" name="DutyType" class="form-control" required placeholder="Örn: Nöbetçi Aççr Ceza Mahkemesi" />
+                        <input type="text" name="DutyType" class="form-control" required placeholder="Örn: Nöbetçi Ağır Ceza Mahkemesi" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Görevli Birim / Kişi *</label>
-                        <input type="text" name="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. Aççr Ceza Mahkemesi" />
+                        <input type="text" name="DutyOfficerOrUnit" class="form-control" required placeholder="Örn: 1. Ağır Ceza Mahkemesi" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">İletişim Bilgişi</label>
+                        <label class="form-label">İletişim Bilgisi</label>
                         <input type="text" name="ContactInfo" class="form-control" placeholder="Örn: Dahili 1112" />
                     </div>
                     <div class="mb-3">
